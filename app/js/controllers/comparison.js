@@ -22,6 +22,7 @@ function ComparisonCtrl ($log, $stateParams, registryData, metricsPercentages) {
 
   this.mergePackageValues = (metricNames, firstValues, secondValues) => {
     var results = []
+    // FIXME Use a cleaner way to make the merge.
     firstValues.complexity = convertArrayToObject(firstValues.complexity)
     firstValues.halstead = convertArrayToObject(firstValues.halstead)
     secondValues.complexity = convertArrayToObject(secondValues.complexity)
@@ -33,11 +34,8 @@ function ComparisonCtrl ($log, $stateParams, registryData, metricsPercentages) {
     for (var i = 0; i < metricNames.length; i++) {
       var temp = {}
       temp.name = metricNames[i]
-      if (temp.name === 'totalLOC') {
-        temp.description = Metrics['loc'].description
-      } else {
-        temp.description = Metrics[temp.name].description
-      }
+      temp.description = Metrics[temp.name].description
+
       temp.first = {}
       temp.second = {}
 
@@ -73,11 +71,7 @@ function ComparisonCtrl ($log, $stateParams, registryData, metricsPercentages) {
     'difficulty'
   ]
 
-  $log.warn(metricsPercentages)
-
   this.complexityMetrics = this.mergePackageValues(this.metricNames, metricsPercentages[0], metricsPercentages[1])
-
-  $log.warn(this.complexityMetrics)
 }
 
 controllersModule.controller('ComparisonCtrl', ComparisonCtrl)

@@ -15,6 +15,14 @@ var settings = {
       title: 'Logical lines per function',
       description: 'The count of the imperative statements in a module or function'
     },
+    totalLOC: {
+      title: 'Total logical lines',
+      description: 'The count of the imperative statements in the package'
+    },
+    totalSLOC: {
+      title: 'Total lines of code',
+      description: 'The count of lines in the package'
+    },
     cyclomatic: {
       title: 'The average per-function cyclomatic complexity',
       description: 'Effectively the number of distinct paths through a block of code. Lower is better.'
