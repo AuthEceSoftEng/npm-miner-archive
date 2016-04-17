@@ -1,0 +1,10 @@
+
+
+
+<div class="row" ng-repeat="item in list.results">
+  <div class="col-md-12">
+    <h5>
+      <a ng-click="list.fetchPackage(item.name)" style="cursor: pointer"> {{ item.name }} </a> - {{ item.description }}
+    </h5>
+  </div>
+</div>

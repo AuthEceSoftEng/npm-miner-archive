@@ -1,0 +1,259 @@
+@import 'gremlin-editor';
+
+.well[ui-view]{
+ height: 65px;
+}
+
+.ui-view-container {
+  position: relative;
+}
+
+[ui-view].ng-enter, [ui-view].ng-leave {
+  -webkit-transition:all .2s ease-in;
+  -moz-transition:all .2s ease-in;
+  -o-transition:all .2s ease-in;
+  transition:all .2s ease-in;
+}
+
+[ui-view].ng-enter {
+  opacity: 0;
+}
+
+[ui-view].ng-enter-active {
+  opacity: 1;
+}
+
+[ui-view].ng-leave {
+  opacity: 1;
+}
+
+[ui-view].ng-leave-active {
+  opacity: 0;
+}
+
+// Query Editor
+
+.button-section {
+    padding: 20px 0;
+}
+
+// Sigma graph
+
+#graph-container {
+    position: absolute;
+    top: 80px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+// Node tooltips
+.sigma-tooltip-edge {
+    background-color: rgb(240, 240, 240);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    border-radius: 6px;
+    padding: 2px 3px;
+    color: #1B1B1B;
+}
+.sigma-tooltip > .arrow {
+    border-width: 10px;
+    position: absolute;
+    display: block;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+}
+.sigma-tooltip.top {
+    margin-top: -12px;
+}
+.sigma-tooltip.top > .arrow {
+    left: 50%;
+    bottom: -10px;
+    margin-left: -10px;
+    border-top-color: rgb(249, 247, 237);
+    border-bottom-width: 0;
+}
+.sigma-tooltip.bottom {
+    margin-top: 12px;
+}
+.sigma-tooltip.bottom > .arrow {
+    left: 50%;
+    top: -10px;
+    margin-left: -10px;
+    border-bottom-color: rgb(249, 247, 237);
+    border-top-width: 0;
+}
+.sigma-tooltip.left {
+    margin-left: -12px;
+}
+.sigma-tooltip.left > .arrow {
+    top: 50%;
+    right: -10px;
+    margin-top: -10px;
+    border-left-color: rgb(249, 247, 237);
+    border-right-width: 0;
+}
+.sigma-tooltip.right {
+    margin-left: 12px;
+}
+.sigma-tooltip.right > .arrow {
+    top: 50%;
+    left: -10px;
+    margin-top: -10px;
+    border-right-color: rgb(249, 247, 237);
+    border-left-width: 0;
+}
+
+.node-tooltip-wrapper {
+    max-width: 230px
+}
+
+.node-tooltip-heading {
+    a {
+        color: white
+    }
+
+    font-size: 13px;
+}
+
+.node-tooltip-item-header {
+    padding: 0;
+    font-weight: bold;
+    font-size: 11px;
+}
+
+.node-tooltip-item-content {
+    font-size: 11px;
+    padding: 0;
+}
+
+.node-tooltip-body {
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+.tooltip-panel {
+    margin-bottom: 0;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+}
+
+#node-info-box {
+    position: absolute;
+    bottom: 1em;
+    left: 2em;
+    z-index: 1000;
+}
+
+#graph-layout-notification {
+    display: block;
+    position: absolute;
+    bottom: 1em;
+    left: 1em;
+    visibility: hidden;
+    font-weight: bold;
+}
+
+#graph-size-info {
+    display: block;
+    position: absolute;
+    bottom: 1em;
+    left: 50%;
+}
+
+#sigma-stage-menu {
+
+}
+
+.sigma-dropdown-menu {
+    display: block;
+    z-index: 1000;
+    max-width: 160px;
+    padding: 5px 0;
+    margin: 2px 0 0;
+    list-style: none;
+    border: 1px solid #eee;
+    border-radius: 6px;
+    background-clip: padding-box;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    background-color: white;
+
+    .divider {
+        height: 1px;
+        margin: 9px 1px;
+        overflow: hidden;
+        border-bottom: 1px solid #e5e5e5;
+    }
+
+    li {
+        line-height: 20px;
+        list-style: none;
+
+        a {
+            display: block;
+            cursor: pointer;
+            padding: 3px 20px;
+            clear: both;
+            font-weight: normal;
+            line-height: 20px;
+            color: black;
+            white-space: nowrap;
+            text-decoration: none;
+
+        }
+
+        a:hover {
+            color: white;
+            background-color: #3498DB;
+        }
+    }
+}
+
+#sigma-filter-panel {
+    position: absolute;
+    min-width: 300px;
+    right: 20px;
+    top: 90px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+
+    .panel {
+        margin-bottom: 0;
+    }
+
+    .panel-title {
+        font-size: 15px;
+        line-height: 1.4;
+    }
+
+    .panel-heading {
+        span {
+            cursor: pointer;
+        }
+    }
+
+    .panel-body {
+        padding-top: 0px;
+
+        .nav-tabs {
+            font-size: 14px;
+        }
+    }
+
+    .panel-footer {
+        background-color: white;
+    }
+
+    .tab-content {
+        padding-top: 10px;
+    }
+
+    .filter-type {
+        font-size: 13px;
+        padding-bottom: 5px;
+    }
+
+    .algorithm-name {
+        font-size: 15px;
+    }
+}
+

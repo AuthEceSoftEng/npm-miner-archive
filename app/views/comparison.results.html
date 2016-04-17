@@ -1,0 +1,40 @@
+
+<div class="row">
+  <div class="col-md-12">
+    <h3 class="text-center">
+      <strong> {{cmp.first._id}}@{{cmp.first['dist-tags'].latest}}</strong>
+      vs
+      <strong> {{cmp.second._id}}@{{cmp.second['dist-tags'].latest}}</strong>
+    </h3>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12 horizontal-spacer-sm"></div>
+</div>
+
+<div class="row">
+  <div classs="col-md-12">
+    <div class="panel panel-primary">
+      <div class="panel-heading"> Complexity metrics </div>
+      <div class="panel-body">
+        <div class="col-md-4" ng-repeat="metric in cmp.complexityMetrics">
+          <h5 class="metric-name">
+            <strong> {{ metric.name | readable }} </strong>
+          </h5>
+          <p><small class="metric-description"> {{ metric.description }} </small></p>
+          <div class="progress" style="margin-bottom: 5px">
+            <div class="progress-bar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="metric.first.value" style="width: {{ metric.first.percentage }}%">
+              <span><strong> {{ cmp.first._id }}</strong></span>
+            </div>
+          </div>
+          <div class="progress">
+            <div class="progress-bar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="metric.second.value" style="width: {{ metric.second.percentage }}%">
+              <span><strong> {{ cmp.second._id }} </strong></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,23 @@
+<div class="panel panel-default">
+  <div class="panel-body">
+    <table class="table table-hover">
+      <tr ng-repeat="metric in metrics" ng-if="metric.trend !== undefined">
+        <td>
+          <strong>
+            {{ metric.name | capitalize }}
+          </strong>
+        </td>
+        <td> {{ metric.value | number: 2 }} </td>
+        <td ng-if="metric.trend === 'down'">
+          <i class="fa fa-arrow-down"></i>
+        </td>
+        <td ng-if="metric.trend === 'up'">
+          <i class="fa fa-arrow-up"></i>
+        </td>
+        <td ng-if="metric.trend === 'same'">
+          <i class="fa fa-minus"></i>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>

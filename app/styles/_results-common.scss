@@ -1,0 +1,54 @@
+
+
+.general-info-item {
+    text-align: center;
+}
+
+.meta-statistic {
+    // redish
+    color: #E05C5D;
+}
+
+.section-sep-heading {
+    font-family: 'Montserrat', serif;
+    font-size: 1.6em;
+}
+
+.dropdown-menu {
+    background-color: white;
+}
+
+
+// Tabs
+.nav-tabs > li > div {
+}
+
+.nav > li > div {
+    position: relative;
+    display: block;
+    padding: 20px 25px 20px 10px;
+}
+
+.nav-tabs > li.active > div,
+.nav-tabs > li.active > div:hover {
+    color: #555;
+    cursor: default;
+    border-bottom-color: transparent;
+}
+
+.uib-tab > div {
+    color: rgb(143, 143, 143);
+    cursor: pointer;
+}
+
+.overview-value {
+    margin-top: 5px;
+}
+
+.circle-progress-text {
+    position: absolute;
+    bottom: 35%;
+    left: 50%;
+    font-size: 3em;
+    transform: translateX(-50%);
+}

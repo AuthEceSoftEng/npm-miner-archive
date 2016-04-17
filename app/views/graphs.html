@@ -1,0 +1,21 @@
+
+
+
+<div ui-view></div>
+
+
+
+<nav mfb-menu position="br"
+     effect="zoomin"
+     label="Menu"
+     active-icon="fa fa-bars"
+     resting-icon="fa fa-bars"
+     toggling-method="hover">
+
+  <a mfb-button icon="{{button.icon}}"
+     label="{{button.label}}"
+     ng-click="button.trigger()"
+     ng-repeat="button in graphs.actionButtons">
+  </a>
+
+</nav>

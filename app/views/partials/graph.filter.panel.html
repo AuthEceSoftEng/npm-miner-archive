@@ -1,0 +1,53 @@
+
+<div id="sigma-filter-panel" ng-show="isFilterPanelActive">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h6 class="panel-title pull-left">
+        Graph filter
+      </h6>
+      <span ng-click="closeFilterPanel()" class="pull-right"> <i class="fa fa-close"></i> </span>
+      <div class="clearfix"></div>
+    </div>
+    <div class="panel-body">
+      <uib-tabset>
+        <uib-tab heading="Nodes">
+          <div class="tab-content">
+            <span class="filter-type"> Search </span>
+            <input type="input" class="form-control" ng-enter="highlightNode()" placeholder="search for a node" ng-model="filters.nodes.query"> </input>
+            <span class="filter-type"> Dependencies {{ filters.nodes.outDegree }} </span>
+            <input type="range" class="form-control" min="0" max="20" ng-model="filters.nodes.outDegree"> </input>
+            <span class="filter-type"> Dependents {{ filters.nodes.inDegree }} </span>
+            <input type="range" class="form-control" min="0" max="20" ng-model="filters.nodes.inDegree"> </input>
+            <span class="filter-type"> By keywords </span>
+            <tags-input ng-model="filters.tags" on-tag-added="updateKeywordSearch()" on-tag-removed="updateKeywordSearch()"></tags-input>
+          </div>
+        </uib-tab>
+        <uib-tab heading="Edges">
+          <span class="filter-type">Dependency type</span>
+          <ui-select ng-model="filters.edges.dependencyType"
+                     on-select="updateDepsTypeFilter()">
+            <ui-select-match placeholder="Dependency type...">
+              {{ $select.selected }}
+            </ui-select-match>
+            <ui-select-choices repeat="option in filters.availableDependencies">
+              <div ng-bind-html="option"></div>
+            </ui-select-choices>
+          </ui-select>
+        </uib-tab>
+        <uib-tab heading="Algorithms">
+          <div class="tab-content">
+            <span class="algorithm-name"> Community detection </span>
+            <button class="btn btn-block btn-default btn-sm" ng-click="runCommunityDetection()" style="margin-top: 10px">Apply</button>
+            <hr>
+          </div>
+        </uib-tab>
+      </uib-tabset>
+    </div>
+    <div class="panel-footer">
+      <div class="button-group">
+        <div class="btn btn-default btn-block" ng-click="resetFilters()">Reset</div>
+      </div>
+    </div>
+  </div>
+</div>
+

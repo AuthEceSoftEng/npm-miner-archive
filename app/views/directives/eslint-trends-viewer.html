@@ -1,0 +1,49 @@
+<div class="panel" style="margin-bottom: 5px">
+  <div class="panel-body" style="padding-left: 0">
+    <div class="col-md-4" style="padding-left: 0">
+      <ui-select ng-model="ui.activeVersion"
+                on-select="fetchFiles($select.selected)"
+                theme="bootstrap">
+        <ui-select-match placeholder="Choose a version..."> {{ $select.selected }} </ui-select-match>
+        <ui-select-choices repeat="version in ui.availableVersions">
+          <div ng-bind-html="version"></div>
+        </ui-select-choices>
+      </ui-select>
+    </div>
+
+    <div class="col-md-4" style="padding-left: 0">
+      <ui-select ng-model="ui.activeFile"
+                 on-select="renderFileContents($select.selected)"
+                 theme="bootstrap">
+        <ui-select-match placeholder="Choose a file">
+          {{ $select.selected.filePath | relativePath }}
+        </ui-select-match>
+        <ui-select-choices repeat="filename in ui.availableFiles">
+          {{ filename.filePath | relativePath }}
+        </ui-select-choices>
+      </ui-select>
+    </div>
+  </div>
+</div>
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="pull-left">
+        <span class="label label-danger" style="margin-left: 15px; margin-right: 15px">
+          <i class="fa fa-lg fa-exclamation-circle"></i> {{ ui.activeFile.errorCount }}
+        </span>
+        <span class="label label-warning">
+          <i class="fa fa-lg fa-exclamation-triangle"></i> {{ ui.activeFile.warningCount }}
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="panel-body">
+    <code-mirror-editor
+      ng-if="ui.isCodeReady"
+      errors="ui.activeFile.messages"
+      options="codeOptions">
+    </code-mirror-editor>
+  </div>
+</div>

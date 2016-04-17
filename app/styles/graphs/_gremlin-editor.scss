@@ -1,0 +1,31 @@
+
+#gremlin-editor {
+    position: absolute;
+    min-width: 500px;
+    left: 20px;
+    top: 90px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+
+    .panel {
+        margin-bottom: 0;
+    }
+
+    .panel-title {
+        font-size: 15px;
+        line-height: 1.4;
+    }
+
+    .panel-heading {
+        span {
+            cursor: pointer;
+        }
+    }
+
+    .panel-body {
+        padding-top: 0px;
+
+        .nav-tabs {
+            font-size: 14px;
+        }
+    }
+}

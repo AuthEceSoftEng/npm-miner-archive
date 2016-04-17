@@ -1,0 +1,36 @@
+
+<nav class="navbar navbar-default" ng-controller="NavbarCtrl as navbar">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" ui-sref="main.search">npm-miner</a>
+
+      <!--Search for the graph section-->
+      <form class="navbar-form navbar-left" role="search" ng-show="$state.includes('main.graphs')">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search for a package" ng-model="navbar.query">
+        </div>
+        <button type="submit" class="btn btn-default" ng-click="navbar.proccessQuery(navbar.query)"><i class="fa fa-search"></i></button>
+      </form>
+
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li ui-sref-active="active">
+          <a ui-sref="main.search"> Search </a>
+        </li>
+        <li ui-sref-active="active">
+          <a ui-sref="main.graphs"> Graphs </a>
+        </li>
+        <li ui-sref-active="active">
+          <a ui-sref="main.about"> About </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,87 @@
+
+
+<div class="panel panel-default">
+  <div class="panel-body">
+
+    <div class="col-md-3" id="escomplex-control-section">
+      <uib-tabset>
+        <uib-tab class="nav nav-tabs"
+                 ng-repeat="tab in ui.tabs"
+                 heading="{{ tab.title }}"
+                 active="tab.active">
+          <div ng-include="tab.template"></div>
+          </uib-tab>
+          </uib-tabset>
+    </div>
+
+    <div class="col-md-9" id="escomplex-graph-viewer" style="padding-right: 0">
+
+      <ng-switch on="plot.chartType">
+
+        <div ng-switch-when="line" style="min-height: 550px">
+          <line-chart
+             data="plot.data"
+             type="plot.chartType"
+             labels="plot.versions"
+             xlabel="plot.xLabel"
+             xvisible="true"
+             subtitle="plot.meta.description"
+             title="plot.meta.title">
+          </line-chart>
+        </div>
+
+        <div ng-switch-when="column" style="min-height: 550px">
+          <line-chart
+             data="plot.data"
+             type="plot.chartType"
+             labels="plot.versions"
+             xlabel="plot.xLabel"
+             xvisible="false"
+             subtitle="plot.meta.description"
+             title="plot.meta.title">
+          </line-chart>
+
+        </div>
+
+        <div ng-switch-when="perfile" style="min-height: 550px">
+          <div class="row">
+            <div class="col-md-4">
+              <panel-data-table
+                title="'Halstead measures (average)'"
+                items="ui.files.fileSelected.aggregate.halstead">
+              </panel-data-table>
+            </div>
+            <div class="col-md-4">
+              <panel-data-table
+                title="'Functions (average)'"
+                items="ui.files.functionMetrics">
+              </panel-data-table>
+            </div>
+            <div class="col-md-4" style="padding-left: 0">
+              <line-chart
+                data="ui.files.functionNaming.series"
+                type="'pie'"
+                title="ui.files.functionNaming.title">
+              </line-chart>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12" style="padding: 0">
+              <line-chart
+                 type="'column'"
+                 labels="ui.files.functions.filenames"
+                 xlabel="'Files'"
+                 xvisible="false"
+                 title="ui.files.functions.title"
+                 data="ui.files.functions.data">
+              </line-chart>
+            </div>
+          </div>
+
+        </div>
+
+      </ng-switch>
+    </div>
+  </div>
+</div>
+

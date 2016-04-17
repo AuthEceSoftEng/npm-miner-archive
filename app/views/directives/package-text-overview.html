@@ -1,0 +1,19 @@
+<p>
+<strong>{{ ui.name }}</strong> has <strong>{{ ui.dependencies }}</strong> dependenices and <strong>{{ ui.devDependencies }}</strong> development dependencies.
+The maintainers release a new version approximately every <strong> {{ ui.releaseRate | number:0 }} </strong> days.
+</p>
+<p>
+The latest version was released <strong>{{ ui.latestReleaseInDays | number:0 }}</strong> days ago,
+and is consisted of <strong>{{ ui.totalLOC }}</strong> lines of code and <strong>{{ ui.totalFunctions }}</strong> functions.
+</p>
+
+<p>
+<div ng-if="isHighRated">
+  It's ranked among the packages with the highest {{ ui.highMetric }}.
+</div>
+</p>
+
+<p>
+There are <strong>{{ ui.dependants }}</strong> packages that depend on <strong>{{ ui.name }}.</strong>
+Most of them (<strong>{{ ui.dependantPercentage | number:2 }}</strong> %) use it as a <strong>{{ ui.dependantType }}</strong> dependency.
+</p>

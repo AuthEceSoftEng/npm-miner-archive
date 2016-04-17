@@ -1,0 +1,9 @@
+
+<div style="max-height: 500px; overflow: auto">
+  <ul class="list-group">
+    <li class="list-group-item" ng-repeat="todo in todos">
+      <h4 class="list-group-item-heading"> <strong>{{ todo.kind }}</strong>: {{ todo.text }} </h4>
+      <p class="list-group-item-text"> {{ todo.file }}@{{ todo.line }} </p>
+    </li>
+  </ul>
+</div>

@@ -1,0 +1,61 @@
+
+<div class="row">
+  <div class="col-md-12" style="min-height: 500px">
+
+    <div class="col-xs-12 horizontal-spacer-sm"></div>
+
+    <span class="filter-type"> Select a version </span>
+
+    <ui-select ng-model="ui.files.versionSelected"
+               on-select="onSelectEscomplexVersion($select.selected)"
+               theme="bootstrap">
+      <ui-select-match placeholder="Select a metric...">{{ $select.selected }}</ui-select-match>
+      <ui-select-choices repeat="version in ui.versions">
+        <div ng-bind-html="version"></div>
+      </ui-select-choices>
+    </ui-select>
+
+    <uib-accordion close-others="true">
+
+      <!--START ALL FILES-->
+      <uib-accordion-group heading="All files" is-open="true">
+        <span class="filter-type"> Quality metrics (Average) </span>
+
+        <ui-select ng-model="ui.files.metricSelected"
+                   on-select="onSelectMetricForFiles($select.selected)"
+                   theme="bootstrap">
+          <ui-select-match placeholder="Select a metric...">{{ $select.selected.split('.')[1] | readable }}</ui-select-match>
+          <ui-select-choices repeat="metric in ui.files.metrics.main">
+            <div ng-bind-html="metric.split('.')[1] | readable"></div>
+          </ui-select-choices>
+        </ui-select>
+
+        <div class="col-xs-12" style="height:30px;"></div>
+        <span class="filter-type"> Halstead measures </span>
+
+        <ui-select ng-model="ui.files.metricHalsteadSelected"
+                   on-select="onSelectMetricForFiles($select.selected)"
+                   theme="bootstrap">
+          <ui-select-match placeholder="Select a metric...">{{ $select.selected.split('.')[1] | capitalize }}</ui-select-match>
+          <ui-select-choices repeat="metric in ui.files.metrics.halstead">
+            <div ng-bind-html="metric.split('.')[1] | capitalize"></div>
+          </ui-select-choices>
+        </ui-select>
+      </uib-accordion-group>
+
+      <!--START PER FILE-->
+      <uib-accordion-group heading="Per file" >
+        <span class="filter-type"> Select a file </span>
+
+        <ui-select ng-model="ui.files.fileSelected"
+                   on-select="onSelectEscomplexFile($select.selected)"
+                   theme="bootstrap">
+          <ui-select-match placeholder="Select a metric...">{{ $select.selected.path | relativePath }}</ui-select-match>
+          <ui-select-choices repeat="file in files">
+            <div ng-bind-html="file.path | relativePath"></div>
+          </ui-select-choices>
+        </ui-select>
+      </uib-accordion-group>
+    </uib-accordion>
+  </div>
+</div>

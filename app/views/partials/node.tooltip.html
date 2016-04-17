@@ -1,0 +1,50 @@
+<div class="node-tooltip-wrapper"
+     id="node-info-box" ng-show="nodeInfoBox.isActive">
+  <div class="row">
+    <div class="panel panel-primary tooltip-panel">
+
+      <div class="panel-heading">
+        <h3 class="node-tooltip-heading">
+          <a href="{{ nodeInfoBox.link }}" target="_blank">
+            {{ nodeInfoBox.name }}
+          </a>
+        </h3>
+      </div>
+
+      <div class="panel-body node-tooltip-body">
+        <div class="info-section" ng-show="nodeInfoBox.description">
+          <div class="col-md-12 node-tooltip-item-header">
+            <h6 class="node-tooltip-info"> Description </h6>
+          </div>
+          <div class="col-md-12 node-tooltip-item-content">
+            {{ nodeInfoBox.description }}
+          </div>
+        </div>
+        <div class="info-section" ng-show="nodeInfoBox.version">
+          <div class="col-md-12 node-tooltip-item-header">
+            <h6 class="node-tooltip-info"> Latest version </h6>
+          </div>
+          <div class="col-md-12 node-tooltip-item-content">
+            {{ nodeInfoBox.version}}
+          </div>
+        </div>
+        <div class="info-section" ng-show="nodeInfoBox.metrics.inDegree">
+          <div class="col-md-12 node-tooltip-item-header">
+            <h6 class="node-tooltip-info"> In degree </h6>
+          </div>
+          <div class="col-md-12 node-tooltip-item-content">
+            {{ nodeInfoBox.metrics.inDegree }}
+          </div>
+        </div>
+        <div class="info-section" ng-show="nodeInfoBox.metrics.outDegree">
+          <div class="col-md-12 node-tooltip-item-header">
+            <h6 class="node-tooltip-info"> Out degree </h6>
+          </div>
+          <div class="col-md-12 node-tooltip-item-content">
+            {{ nodeInfoBox.metrics.outDegree }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

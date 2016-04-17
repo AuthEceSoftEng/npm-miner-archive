@@ -1,0 +1,34 @@
+/* eslint table */
+
+.lint-error-summary-heading {
+    text-align: left;
+}
+
+.lint-file-heading {
+    text-align: left !important;
+}
+
+.error-summary {
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-right: 20px;
+}
+
+.panel-heading {
+    text-align: left;
+}
+
+.file-error-summary {
+    font-weight: bold;
+    margin-right: 20px;
+}
+
+.lint-error {
+    color: #DA4453;
+    cursor: pointer;
+}
+
+.lint-warning {
+    color: #F6BB42;
+    cursor: pointer;
+}

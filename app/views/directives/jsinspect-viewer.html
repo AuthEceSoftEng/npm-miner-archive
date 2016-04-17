@@ -1,0 +1,15 @@
+
+<div style="max-height: 700px; overflow: auto">
+  <uib-accordion>
+    <uib-accordion-group ng-repeat="match in processedMatches" is-open="match.isOpen">
+
+      <uib-accordion-heading>
+        {{ match['-'].path }} ({{ match['-'].lines[0] }}, {{ match['-'].lines[1] }}) and {{ match['+'].path }} ({{ match['+'].lines[0] }}, {{ match['+'].lines[1] }})
+        <i class="pull-right fa" ng-class="{'fa-chevron-down': match.isOpen, 'fa-chevron-right': !match.isOpen}"></i>
+      </uib-accordion-heading>
+
+      <diff-viewer diff="match.formatedDiff"></diff-viewer>
+
+    </uib-accordion-group>
+  </uib-accordion>
+</div>

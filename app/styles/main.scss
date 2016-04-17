@@ -1,0 +1,71 @@
+
+// Fonts
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,300,500,700);
+@import url(https://fonts.googleapis.com/css?family=Montserrat:400,300,500,700);
+
+// Partials
+@import 'escomplex-panel';
+@import 'eslint-panel';
+@import 'navbar';
+@import 'search';
+@import 'results-common';
+@import 'charts';
+@import 'graphs/main';
+
+body {
+  font-family: 'Montserrat', sans-serif;
+}
+
+// Unset the width by font-awesome
+.mfb-component__child-icon,
+.mfb-component__icon,
+.mfb-component__main-icon,
+.mfb-component__main-icon--resting,
+.mfb-component__main-icon--active {
+    width: 100% !important;
+}
+
+.mfb-component__button--child,
+.mfb-component__button--main {
+    color: white;
+
+    &:hover {
+        color: white;
+    }
+}
+
+#toast-container {
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.9em;
+}
+
+.form-control {
+    background-color: white;
+}
+
+.horizontal-spacer-lg {
+    height: 70px;
+}
+
+.horizontal-spacer-md {
+    height: 50px;
+}
+
+.horizontal-spacer-sm {
+    height: 30px;
+}
+
+.horizontal-spacer-xs {
+    height: 10px;
+}
+
+// Comparison panel
+.metric-name {
+    margin: 0;
+}
+
+.metric-description {
+    color: gray;
+}
+
+

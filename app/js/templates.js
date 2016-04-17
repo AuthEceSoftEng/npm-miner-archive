@@ -1,0 +1,26 @@
+'use strict'
+
+var angular = require('angular')
+var fs = require('fs')
+var path = require('path')
+
+angular.module('templates', []).run(['$templateCache', function ($templateCache) {
+  $templateCache.put('navbar.html', fs.readFileSync(path.resolve('app/views/navbar.html')))
+  $templateCache.put('analytics.input.html', fs.readFileSync(path.resolve('app/views/analytics.input.html')))
+  $templateCache.put('analytics.results.html', fs.readFileSync(path.resolve('app/views/analytics.results.html')))
+  $templateCache.put('graphs.html', fs.readFileSync(path.resolve('app/views/graphs.html')))
+  $templateCache.put('graph-viewer.html', fs.readFileSync(path.resolve('app/views/graph-viewer.html')))
+  $templateCache.put('query-editor.html', fs.readFileSync(path.resolve('app/views/query-editor.html')))
+  $templateCache.put('about.html', fs.readFileSync(path.resolve('app/views/about.html')))
+  $templateCache.put('escomplex-trends-viewer.html', fs.readFileSync(path.resolve('app/views/directives/escomplex-trends-viewer.html')))
+  $templateCache.put('eslint-trends-viewer.html', fs.readFileSync(path.resolve('app/views/directives/eslint-trends-viewer.html')))
+  $templateCache.put('escomplex.actionbar.summary.html', fs.readFileSync(path.resolve('app/views/escomplex.actionbar.summary.html')))
+  $templateCache.put('escomplex.actionbar.files.html', fs.readFileSync(path.resolve('app/views/escomplex.actionbar.files.html')))
+  $templateCache.put('panel-data-table.html', fs.readFileSync(path.resolve('app/views/directives/panel-data-table.html')))
+  $templateCache.put('trends-panel.html', fs.readFileSync(path.resolve('app/views/directives/trends-panel.html')))
+  $templateCache.put('directives/package-text-overview.html', fs.readFileSync(path.resolve('app/views/directives/package-text-overview.html')))
+  $templateCache.put('directives/todos-viewer.html', fs.readFileSync(path.resolve('app/views/directives/todos-viewer.html')))
+  $templateCache.put('directives/jsinspect-viewer.html', fs.readFileSync(path.resolve('app/views/directives/jsinspect-viewer.html')))
+  $templateCache.put('search.results.html', fs.readFileSync(path.resolve('app/views/search.results.html')))
+  $templateCache.put('comparison.results.html', fs.readFileSync(path.resolve('app/views/comparison.results.html')))
+}])

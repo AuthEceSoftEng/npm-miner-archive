@@ -1,0 +1,39 @@
+
+.navbar-brand {
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+}
+
+ul.navbar-right {
+    li {
+        font-weight: 400;
+        text-transform: uppercase;
+    }
+}
+
+// Smaller height for the navbar
+.navbar {
+    background-color: white;
+    margin-bottom: 0;
+    padding: 0;
+}
+
+#loading-bar-spinner {
+  top: 15px;
+  left: 15px;
+}
+
+#loading-bar .bar {
+    height: 2px;
+}
+
+#loading-bar-spinner .spinner-icon {
+  width: 22px;
+  height: 22px;
+
+  border:  solid 2px transparent;
+}
+
+.navbar-form .form-control {
+    color: #777;
+}

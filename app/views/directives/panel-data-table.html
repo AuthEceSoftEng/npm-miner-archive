@@ -1,0 +1,22 @@
+<div class="panel panel-default">
+  <div
+     class="panel-heading"
+     uib-popover="{{ description }}"
+     popover-trigger="mouseenter">
+    <strong> {{ title }}</strong>
+  </div>
+
+  <div class="panel-body">
+    <table class="table table-hover">
+      <tr ng-repeat="(name, value) in items"
+          ng-show="(name !== 'operators' && name !== 'operands')">
+        <td>
+          <strong>
+            {{ name | capitalize }}
+          </strong>
+        </td>
+        <td> {{ value | number: 2 }} </td>
+      </tr>
+    </table>
+  </div>
+</div>

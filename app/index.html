@@ -1,0 +1,47 @@
+<!doctype html>
+<html class="no-js">
+  <head>
+      <base href="/">
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title ng-bind="pageTitle"></title>
+      <meta name="description" content="">
+      <meta name="viewport" content="width=device-width">
+
+      <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" media="all" >
+      <link rel="stylesheet" href="css/ui-bootstrap-csp.css" type="text/css" media="all" >
+      <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css" media="all" >
+      <link rel="stylesheet" href="css/loading-bar.min.css" type="text/css" media="all">
+      <link rel="stylesheet" href="css/angular-toastr.min.css" type="text/css" media="screen">
+      <link rel="stylesheet" href="css/select.min.css" type="text/css" media="screen">
+      <link rel="stylesheet" href="css/codemirror.css">
+      <link rel="stylesheet" href="css/lint.css">
+      <link rel="stylesheet" href="css/mfb.min.css">
+      <link rel="stylesheet" href="css/ng-tags-input.min.css">
+      <link rel="stylesheet" href="css/github.css">
+      <link rel="stylesheet" href="css/main.css">
+  </head>
+  <body>
+    <!-- Fixed navbar -->
+    <div ng-include="'navbar.html'"></div>
+
+
+    <div ui-view></div>
+
+    <!--TODO: add a footer-->
+    <!-- Layout algorithm for linkurious -->
+    <script src="js/dagre.min.js"></script>
+
+    <!--Linkurious/Sigma.js-->
+    <script src="js/sigma.js"></script>
+    <script src="js/plugins.js"></script>
+
+    <!--Main app-->
+    <script src="js/main.js"></script>
+
+    <!--CodeMirror Plugins-->
+    <script src="js/javascript.js"></script>
+    <script src="js/autorefresh.js"></script>
+    <script src="js/groovy.js"></script>
+  </body>
+</html>

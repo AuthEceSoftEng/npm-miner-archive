@@ -1,0 +1,31 @@
+
+<div id="gremlin-editor" ng-if="isGremlinEditorActive">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h6 class="panel-title pull-left">
+        Gremlin Editor
+      </h6>
+      <span ng-click="closeGremlinEditor()" class="pull-right">
+        <i class="fa fa-close"></i>
+      </span>
+      <div class="clearfix"></div>
+    </div>
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-md-12">
+          <gremlin-editor options="gremlin.options" on-change="onGremlinEditorChange"> </gremlin-editor>
+        </div>
+      </div>
+    </div>
+    <div class="panel-footer">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="btn btn-default btn-sm btn-block" ng-click="runGremlinScript()">Run</div>
+        </div>
+        <div class="col-md-6">
+          <div class="btn btn-default btn-sm btn-block" ng-click="clearGremlinScript()">Clear</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
