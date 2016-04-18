@@ -80,8 +80,8 @@ function OnConfig ($stateProvider, $locationProvider, $urlRouterProvider, uiSele
         },
         metricsPercentages: function ($stateParams, $log, MetricsService) {
           return Promise.all([
-            MetricsService.getPercentages($stateParams.firstPackage),
-            MetricsService.getPercentages($stateParams.secondPackage)
+            MetricsService.getPercentages($stateParams.firstPackage, true),
+            MetricsService.getPercentages($stateParams.secondPackage, true)
           ])
           .then((results) => {
             return Promise.resolve(results)

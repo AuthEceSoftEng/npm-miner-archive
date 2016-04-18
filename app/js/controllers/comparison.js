@@ -2,6 +2,7 @@
 
 const controllersModule = require('./_index')
 const Metrics = require('../constants').metrics
+const Utils = require('../utils/package-metrics')
 
 function convertArrayToObject (arr) {
   var res = {}
@@ -57,6 +58,27 @@ function ComparisonCtrl ($log, $stateParams, registryData, metricsPercentages) {
     return results
   }
 
+  this.mergeGraphMetrics = (left, right) => {
+    var res = []
+
+    for (var i = 0; i < left.length; i++) {
+      res.push({
+        name: left[i].name,
+        description: '',
+        left: {
+          value: left[i].value,
+          percentage: left[i].percentage
+        },
+        right: {
+          value: right[i].value,
+          percentage: right[i].percentage
+        }
+      })
+    }
+
+    return res
+  }
+
   this.first = registryData[0]
   this.second = registryData[1]
   this.metricNames = [
@@ -71,7 +93,20 @@ function ComparisonCtrl ($log, $stateParams, registryData, metricsPercentages) {
     'difficulty'
   ]
 
+  this.first.overview = {
+    latestVersion: Utils.getLatestRelease(this.first.time),
+    releaseRate: Utils.calculateReleaseRate(this.first.time),
+    versions: Object.keys(this.first.versions).length
+  }
+
+  this.second.overview = {
+    latestVersion: Utils.getLatestRelease(this.second.time),
+    releaseRate: Utils.calculateReleaseRate(this.second.time),
+    versions: Object.keys(this.second.versions).length
+  }
+
   this.complexityMetrics = this.mergePackageValues(this.metricNames, metricsPercentages[0], metricsPercentages[1])
+  this.graphMetrics = this.mergeGraphMetrics(metricsPercentages[0].graph, metricsPercentages[1].graph)
 }
 
 controllersModule.controller('ComparisonCtrl', ComparisonCtrl)
