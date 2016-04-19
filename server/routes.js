@@ -225,7 +225,8 @@ var MetricsRoutes = [{
   config: {
     validate: {
       query: {
-        name: Joi.string().required()
+        name: Joi.string().required(),
+        withInDegree: Joi.boolean().default(false)
       }
     }
   }

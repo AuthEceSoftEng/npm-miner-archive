@@ -14,27 +14,97 @@
 </div>
 
 <div class="row">
-  <div classs="col-md-12">
-    <div class="panel panel-primary">
-      <div class="panel-heading"> Complexity metrics </div>
-      <div class="panel-body">
-        <div class="col-md-4" ng-repeat="metric in cmp.complexityMetrics">
-          <h5 class="metric-name">
-            <strong> {{ metric.name | readable }} </strong>
-          </h5>
-          <p><small class="metric-description"> {{ metric.description }} </small></p>
-          <div class="progress" style="margin-bottom: 5px">
-            <div class="progress-bar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="metric.first.value" style="width: {{ metric.first.percentage }}%">
-              <span><strong> {{ cmp.first._id }}</strong></span>
-            </div>
+  <div class="panel panel-primary">
+    <div class="panel-heading"> Overview </div>
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-md-4">
+          <h4 class="text-center metrin-name" style="text-decoration: underline">
+            <strong> Published versions </strong>
+          </h4>
+          <div class="text-center">
+            <h2 style="display: inline-block; margin: 0"> {{ cmp.first.overview.versions }}</h2>
+            <h6 style="display: inline-block; margin: 0 5px"> vs </h6>
+            <h2 style="display: inline-block; margin: 0"> {{ cmp.second.overview.versions }}</h2>
           </div>
-          <div class="progress">
-            <div class="progress-bar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="metric.second.value" style="width: {{ metric.second.percentage }}%">
-              <span><strong> {{ cmp.second._id }} </strong></span>
-            </div>
+        </div>
+        <div class="col-md-4">
+          <h4 class="text-center metrin-name" style="text-decoration: underline">
+            <strong> Release rate </strong>
+          </h4>
+          <div class="text-center">
+            <h2 style="display: inline-block; margin: 0"> {{ cmp.first.overview.releaseRate }} days</h2>
+            <h6 style="display: inline-block; margin: 0 5px"> vs </h6>
+            <h2 style="display: inline-block; margin: 0"> {{ cmp.second.overview.releaseRate }} days</h2>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <h4 class="text-center metrin-name" style="text-decoration: underline">
+            <strong> Latest version </strong>
+          </h4>
+          <div class="text-center">
+            <h2 style="display: inline-block; margin: 0"> {{ cmp.first.overview.latestVersion }} days </h2>
+            <h6 style="display: inline-block; margin: 0 5px"> vs </h6>
+            <h2 style="display: inline-block; margin: 0"> {{ cmp.second.overview.latestVersion }} days </h2>
           </div>
         </div>
       </div>
+
+      <div class="row"> <div class="col-md-12 horizontal-spacer-md"></div> </div>
+
+      <div class="row" ng-repeat="metric in cmp.graphMetrics">
+        <comparison-mirror name="metric.name" description="metric.description"
+                           left-value="metric.left.value" left-percentage="metric.left.percentage"
+                           right-value="metric.right.value" right-percentage="metric.right.percentage">
+        </comparison-mirror>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="panel panel-primary">
+    <div class="panel-heading"> Complexity metrics </div>
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-xs-12 horizontal-spacer-sm"></div>
+      </div>
+      <div class="row" ng-repeat="metric in cmp.complexityMetrics">
+        <comparison-mirror name="metric.name"
+                           description="metric.description"
+                           left-value="metric.first.value" left-percentage="metric.first.percentage"
+                           right-value="metric.second.value" right-percentage="metric.second.percentage">
+        </comparison-mirror>
+
+        <div class="row">
+          <div class="col-xs-12 horizontal-spacer-sm"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <div class="pull-right">
+        <ui-select ng-model="cmp.plot.metric" on-select="cmp.changePlot($select.selected)">
+          <ui-select-match placeholder="Choose a metric..."> {{ $select.selected | readable }}</ui-select-match>
+          <ui-select-choices repeat="metric in cmp.complexityLabels">
+            <div ng-bind-html="metric | readable"></div>
+          </ui-select-choices>
+        </ui-select>
+      </div>
+      <div class="panel-title pull-left" style="padding-top: 5px"> Complexity metrics over time </div>
+      <div class="clearfix"></div>
+    </div>
+    <div class="panel-body" style="min-height: 500px; padding: 0">
+      <line-chart type="'spline'"
+                  data="cmp.plot.data"
+                  labels="cmp.plot.labels"
+                  title="cmp.plot.metric | readable"
+                  zoom-type="'x'">
+      </line-chart>
     </div>
   </div>
 </div>

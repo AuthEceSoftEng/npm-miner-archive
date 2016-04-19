@@ -27,7 +27,8 @@ const HALSTEAD_MEASURES = [
 
 const GRAPH_METRICS = [
   'pageRank',
-  'outDegree'
+  'outDegree',
+  'inDegree'
 ]
 
 const METRICS = COMPLEXITY_METRICS.concat(HALSTEAD_MEASURES).concat(GRAPH_METRICS)
@@ -95,19 +96,20 @@ function getDefaultValues () {
 }
 
 function isCacheInvalid (measure, now, lastUpdate) {
-  return (Object.keys(measure).length === 0 || diffInDays(now, lastUpdate) > 2)
+  return (Object.keys(measure).length === 0 || diffInDays(now, lastUpdate) > 5)
 }
 
 /**
  * Converts values of metrics for a package into percentages based on their value.
  */
+// FIXME A lof of logic is duplicated.
 exports.getPercentages = function (request, reply) {
   var now = new Date()
   var name = request.query.name
 
-  // If it's the first time or the last call was more than 2 days ago, update cache.
+  // If it's the first time or the last call was more than N days ago, update cache.
   if (isCacheInvalid(this.complexSeries, now, this.metricsLastUpdate)) {
-    console.log('Updating')
+    request.log(['cache'], 'Fetching raw series')
 
     this.metricsLastUpdate = now
 
@@ -150,7 +152,8 @@ exports.getPercentages = function (request, reply) {
       // Get the metrics for this package
       return Promise.all([
         this.gremlin.execute(`g.V().has('name', '${name}').valueMap(${arrayToStr(METRICS)})`),
-        this.gremlin.execute(`g.V().has('name', '${name}').outE().count()`)
+        this.gremlin.execute(`g.V().has('name', '${name}').outE().count()`),
+        this.gremlin.execute(`g.V().has('name', '${name}').inE().count()`)
       ])
     })
     .then((response) => {
@@ -163,6 +166,9 @@ exports.getPercentages = function (request, reply) {
       }
 
       data.outDegree = response[1]
+      if (request.query.withInDegree) {
+        data.inDegree = response[2]
+      }
 
       // FIXME The following computations should be optimized
       // Compare the values with the general population.
@@ -176,7 +182,8 @@ exports.getPercentages = function (request, reply) {
   } else {
     return Promise.all([
       this.gremlin.execute(`g.V().has('name', '${name}').valueMap(${arrayToStr(METRICS)})`),
-      this.gremlin.execute(`g.V().has('name', '${name}').outE().count()`)
+      this.gremlin.execute(`g.V().has('name', '${name}').outE().count()`),
+      this.gremlin.execute(`g.V().has('name', '${name}').inE().count()`)
     ])
     .then((response) => {
       var data = response[0][0]
@@ -186,6 +193,9 @@ exports.getPercentages = function (request, reply) {
       }
 
       data.outDegree = response[1]
+      if (request.query.withInDegree) {
+        data.inDegree = response[2]
+      }
 
       reply({
         halstead: computePercentages(this.halsteadSeries, data),

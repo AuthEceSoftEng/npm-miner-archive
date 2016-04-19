@@ -1,0 +1,22 @@
+
+<div class="col-md-4">
+  <div class="progress" style="height: 30px">
+    <!--The progress bar will start from the right-->
+    <div class="progress-bar" style="width: {{ leftPercentage }}%; display: block; float: right; line-height: 30px">
+         {{ leftValue }}
+    </div>
+  </div>
+</div>
+<div class="col-md-4">
+  <div class="text-center">
+    <h4 class="metric-name"> {{ name | readable }} </h4>
+    <p style="color: gray"><small> {{ description }} </small></p>
+  </div>
+</div>
+<div class="col-md-4">
+  <div class="progress" style="height: 30px">
+    <div class="progress-bar" style="width: {{ rightPercentage }}%; line-height: 30px">
+      {{ rightValue }}
+    </div>
+  </div>
+</div>

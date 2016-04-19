@@ -24,7 +24,9 @@ const variableToName = {
   'lintWarnings': 'Lint Warnings',
   'lintErrors': 'Lint Errors',
   'similarSnippets': 'Similar Code Snippets',
-  'commentTags': 'Comment Tags'
+  'commentTags': 'Comment Tags',
+  'bugs': 'Bugs',
+  'difficulty': 'Difficulty'
 }
 
 function readable () {
