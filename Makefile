@@ -76,7 +76,7 @@ IMG_DEST_DIR = $(OUTPUT_DIR)/images
 FONT_DEST_DIR = $(OUTPUT_DIR)/fonts
 
 # Production
-prod: clean copy js_min css gzip
+prod: clean copy js_min css
 
 # Development
 dev: clean copy js css
@@ -126,9 +126,6 @@ clean-install: purge install
 
 global:
 	@npm i -g $(GLOBAL_DEPS)
-
-gzip:
-	@gzip -rk $(OUTPUT_DIR)
 
 copy:
 	@mkdir -p $(OUTPUT_DIR)/{js,css,fonts,images}
