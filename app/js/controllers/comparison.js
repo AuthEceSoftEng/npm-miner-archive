@@ -3,6 +3,7 @@
 const controllersModule = require('./_index')
 const Metrics = require('../constants').metrics
 const Utils = require('../utils/package-metrics')
+const _ = require('lodash')
 
 function convertArrayToObject (arr) {
   var res = {}
@@ -18,7 +19,7 @@ function convertArrayToObject (arr) {
   return res
 }
 
-function ComparisonCtrl ($log, $stateParams, registryData, metricsPercentages) {
+function ComparisonCtrl ($log, $stateParams, registryData, metricsPercentages, escomplexSummaries) {
   'ngInject'
 
   this.mergePackageValues = (metricNames, firstValues, secondValues) => {
@@ -92,6 +93,42 @@ function ComparisonCtrl ($log, $stateParams, registryData, metricsPercentages) {
     'firstOrderDensity',
     'difficulty'
   ]
+  this.complexityLabels = [
+    'effort',
+    'maintainability',
+    'loc',
+    'cyclomatic',
+    'params',
+    'firstOrderDensity',
+    'changeCost',
+    'coreSize'
+  ]
+
+  this.initializePlot = (initialMetric) => {
+    // Plotting options
+    this.plot = {
+      metric: initialMetric
+    }
+
+    // Which package has the least number of versions
+    this.minIndex = 0
+
+    var maxSize = _.max(escomplexSummaries[0].version.length, escomplexSummaries[1].version.length)
+    // xAxis with version numbers
+    this.plot.labels = _.range(1, maxSize + 1)
+
+    var diff
+    if (escomplexSummaries[0].version.length > escomplexSummaries[1].version.length) {
+      this.minIndex = 1
+      diff = Math.abs(escomplexSummaries[0].version.length - escomplexSummaries[1].version.length)
+    } else if (escomplexSummaries[0].version.length < escomplexSummaries[1].version.length) {
+      this.minIndex = 0
+      diff = Math.abs(escomplexSummaries[0].version.length - escomplexSummaries[1].version.length)
+    }
+
+    // Padding to push the package with the least values to the end of the chart.
+    this.padding = _.fill(Array(diff), null)
+  }
 
   this.first.overview = {
     latestVersion: Utils.getLatestRelease(this.first.time),
@@ -107,6 +144,29 @@ function ComparisonCtrl ($log, $stateParams, registryData, metricsPercentages) {
 
   this.complexityMetrics = this.mergePackageValues(this.metricNames, metricsPercentages[0], metricsPercentages[1])
   this.graphMetrics = this.mergeGraphMetrics(metricsPercentages[0].graph, metricsPercentages[1].graph)
+
+  this.changePlot = (newMetric) => {
+    if (this.minIndex === 0) {
+      this.plot.data = [{
+        name: registryData[0]._id,
+        data: this.padding.concat(escomplexSummaries[0][newMetric])
+      }, {
+        name: registryData[1]._id,
+        data: escomplexSummaries[1][newMetric]
+      }]
+    } else {
+      this.plot.data = [{
+        name: registryData[1]._id,
+        data: this.padding.concat(escomplexSummaries[1][newMetric])
+      }, {
+        name: registryData[0]._id,
+        data: this.padding.concat(escomplexSummaries[0][newMetric])
+      }]
+    }
+  }
+
+  this.initializePlot('cyclomatic')
+  this.changePlot('cyclomatic')
 }
 
 controllersModule.controller('ComparisonCtrl', ComparisonCtrl)

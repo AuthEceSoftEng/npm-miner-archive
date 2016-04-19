@@ -87,6 +87,16 @@ function OnConfig ($stateProvider, $locationProvider, $urlRouterProvider, uiSele
             return Promise.resolve(results)
           })
           .catch((err) => { return Promise.reject(err) })
+        },
+        escomplexSummaries: function ($stateParams, ESComplexService) {
+          return Promise.all([
+            ESComplexService.getSummary($stateParams.firstPackage),
+            ESComplexService.getSummary($stateParams.secondPackage)
+          ])
+          .then((results) => {
+            return Promise.resolve(results)
+          })
+          .catch((err) => { return Promise.reject(err) })
         }
       }
     })

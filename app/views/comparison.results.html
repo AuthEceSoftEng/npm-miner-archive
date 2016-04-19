@@ -83,3 +83,28 @@
     </div>
   </div>
 </div>
+
+<div class="row">
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <div class="pull-right">
+        <ui-select ng-model="cmp.plot.metric" on-select="cmp.changePlot($select.selected)">
+          <ui-select-match placeholder="Choose a metric..."> {{ $select.selected | readable }}</ui-select-match>
+          <ui-select-choices repeat="metric in cmp.complexityLabels">
+            <div ng-bind-html="metric | readable"></div>
+          </ui-select-choices>
+        </ui-select>
+      </div>
+      <div class="panel-title pull-left" style="padding-top: 5px"> Complexity metrics over time </div>
+      <div class="clearfix"></div>
+    </div>
+    <div class="panel-body" style="min-height: 500px; padding: 0">
+      <line-chart type="'spline'"
+                  data="cmp.plot.data"
+                  labels="cmp.plot.labels"
+                  title="cmp.plot.metric | readable"
+                  zoom-type="'x'">
+      </line-chart>
+    </div>
+  </div>
+</div>
