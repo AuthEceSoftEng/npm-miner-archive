@@ -120,10 +120,10 @@ function ComparisonCtrl ($log, $stateParams, registryData, metricsPercentages, e
     var diff
     if (escomplexSummaries[0].version.length > escomplexSummaries[1].version.length) {
       this.minIndex = 1
-      diff = Math.abs(escomplexSummaries[0].version.length - escomplexSummaries[1].version.length)
-    } else if (escomplexSummaries[0].version.length < escomplexSummaries[1].version.length) {
+      diff = escomplexSummaries[0].version.length - escomplexSummaries[1].version.length
+    } else {
       this.minIndex = 0
-      diff = Math.abs(escomplexSummaries[0].version.length - escomplexSummaries[1].version.length)
+      diff = escomplexSummaries[1].version.length - escomplexSummaries[0].version.length
     }
 
     // Padding to push the package with the least values to the end of the chart.
@@ -160,7 +160,7 @@ function ComparisonCtrl ($log, $stateParams, registryData, metricsPercentages, e
         data: this.padding.concat(escomplexSummaries[1][newMetric])
       }, {
         name: registryData[0]._id,
-        data: this.padding.concat(escomplexSummaries[0][newMetric])
+        data: escomplexSummaries[0][newMetric]
       }]
     }
   }
