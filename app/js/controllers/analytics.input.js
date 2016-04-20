@@ -32,7 +32,9 @@ function AnalyticsInputCtrl ($log, $state, toastr, Gremlin) {
       return Gremlin.searchText(query)
     })
     .then((results) => {
-      if (results) {
+      if (Array.isArray(results) && results.length === 0) {
+        toastr.info('No results found')
+      } else if (results) {
         $state.go('main.search.results', { results })
       }
     })

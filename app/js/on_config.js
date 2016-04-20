@@ -1,35 +1,18 @@
 'use strict'
 
-/**
- * Handle service calls errors
- */
-function handleError (logProvider, serviceName, err) {
-  if (err.statusCode === 404) {
-    return 'not_found'
-  } else {
-    logProvider.error(`[${serviceName}]: ${err}`)
-    return null
-  }
-}
+var Settings = require('./constants')
 
-/**
- * Checks if a service responded with real data.
- */
-function containsData (data) {
-  if (data !== 'not_found' && data !== null && data !== undefined) {
-    return true
-  }
-
-  return false
-}
-
-function OnConfig ($stateProvider, $locationProvider, $urlRouterProvider, uiSelectConfig) {
+function OnConfig ($stateProvider, $locationProvider, $urlRouterProvider, uiSelectConfig, $logProvider) {
   'ngInject'
 
   uiSelectConfig.theme = 'bootstrap'
 
   $urlRouterProvider.otherwise('/')
   $locationProvider.html5Mode(true)
+
+  if (Settings.server.environment === 'production') {
+    $logProvider.debugEnabled(false)
+  }
 
   $stateProvider
     .state('main', {
@@ -68,7 +51,7 @@ function OnConfig ($stateProvider, $locationProvider, $urlRouterProvider, uiSele
       templateUrl: 'comparison.results.html',
       controller: 'ComparisonCtrl as cmp',
       resolve: {
-        registryData: function ($stateParams, $log, RegistryDatabase) {
+        registryData: function ($stateParams, RegistryDatabase) {
           return Promise.all([
             RegistryDatabase.get($stateParams.firstPackage),
             RegistryDatabase.get($stateParams.secondPackage)
@@ -78,7 +61,7 @@ function OnConfig ($stateProvider, $locationProvider, $urlRouterProvider, uiSele
           })
           .catch((err) => { return Promise.reject(err) })
         },
-        metricsPercentages: function ($stateParams, $log, MetricsService) {
+        metricsPercentages: function ($stateParams, MetricsService) {
           return Promise.all([
             MetricsService.getPercentages($stateParams.firstPackage, true),
             MetricsService.getPercentages($stateParams.secondPackage, true)
@@ -88,7 +71,7 @@ function OnConfig ($stateProvider, $locationProvider, $urlRouterProvider, uiSele
           })
           .catch((err) => { return Promise.reject(err) })
         },
-        escomplexSummaries: function ($stateParams, ESComplexService) {
+        escomplexSummaries: function ($stateParams, ESComplexService, toastr) {
           return Promise.all([
             ESComplexService.getSummary($stateParams.firstPackage),
             ESComplexService.getSummary($stateParams.secondPackage)
@@ -96,7 +79,15 @@ function OnConfig ($stateProvider, $locationProvider, $urlRouterProvider, uiSele
           .then((results) => {
             return Promise.resolve(results)
           })
-          .catch((err) => { return Promise.reject(err) })
+          .catch((err) => {
+            if (err.statusCode === 404) {
+              toastr.warning(err.message, 'Warning')
+            } else {
+              toastr.error(err.message, 'Error')
+            }
+
+            return Promise.reject(err)
+          })
         }
       }
     })
@@ -105,7 +96,7 @@ function OnConfig ($stateProvider, $locationProvider, $urlRouterProvider, uiSele
       templateUrl: 'analytics.results.html',
       controller: 'AnalyticsResultsCtrl as results',
       resolve: {
-        escomplexData: function ($stateParams, $log, ESComplexService) {
+        escomplexData: function ($stateParams, toastr, ESComplexService) {
           return Promise.all([
             ESComplexService.getSummary($stateParams.query),
             ESComplexService.getMetricsSummary($stateParams.query)
@@ -117,54 +108,32 @@ function OnConfig ($stateProvider, $locationProvider, $urlRouterProvider, uiSele
             })
           })
           .catch((err) => {
-            handleError($log, 'ESComplexService', err)
+            if (err.statusCode === 404) {
+              toastr.warning(`${$stateParams.query} has not been analyzed yet.`, 'Error')
+            }
+
+            return Promise.reject(err)
           })
         },
-        eslintData: function ($stateParams, $log, ESLintService) {
+        eslintData: function ($stateParams, ESLintService) {
           return ESLintService.getSummary($stateParams.query)
           .then((results) => { return Promise.resolve(results) })
-          .catch((err) => {
-            handleError($log, 'ESLintService', err)
-          })
+          .catch((err) => { return undefined })
         },
-        registryData: function ($log, $stateParams, RegistryDatabase) {
+        registryData: function ($stateParams, RegistryDatabase) {
           return RegistryDatabase.get($stateParams.query)
           .then((results) => { return Promise.resolve(results) })
-          .catch((err) => {
-            handleError($log, 'Registry', err)
-          })
+          .catch((err) => { return Promise.reject(err) })
         },
-        jsinspectData: function ($stateParams, $log, JSInspectService) {
+        jsinspectData: function ($stateParams, JSInspectService) {
           return JSInspectService.get($stateParams.query)
           .then((results) => { return Promise.resolve(results) })
-          .catch((err) => {
-            handleError($log, 'JSInspectService', err)
-          })
+          .catch((err) => { return undefined })
         },
-        todoData: function ($stateParams, $log, TodoService) {
+        todoData: function ($stateParams, TodoService) {
           return TodoService.get($stateParams.query)
           .then((results) => { return Promise.resolve(results) })
-          .catch((err) => {
-            handleError($log, 'TodoService', err)
-          })
-        }
-      },
-      onEnter: function (escomplexData, eslintData, registryData, jsinspectData, todoData, $state) {
-        // TODO Handle better the failure to change state.
-        if (!containsData(registryData) || !(containsData(escomplexData))) {
-          $state.go('main.search')
-        }
-
-        // Collect the arguments of this function into an array.
-        var args = Array.prototype.slice.call(arguments, 1)
-
-        // Find which of them contain real data (i.e no errors)
-        var totalResponses = 0
-        totalResponses = args.filter((arg) => { return containsData(arg) }).length
-
-        // Including the response from the registry.
-        if (totalResponses <= 2) {
-          $state.go('main.search')
+          .catch((err) => { return undefined })
         }
       },
       params: {

@@ -7,6 +7,8 @@ module.exports = {
 
   semverRegex: /\bv?(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)(?:-[\da-z\-]+(?:\.[\da-z\-]+)*)?(?:\+[\da-z\-]+(?:\.[\da-z\-]+)*)?\b/ig,
 
+  environment: process.env.NPM_MINER_ENV || 'production',
+
   rabbitmq: {
     host: process.env.RABBIT_HOST || 'localhost',
     user: process.env.RABBIT_USER || 'guest',
