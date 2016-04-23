@@ -1,0 +1,12 @@
+{
+  "name": "couchdb",
+  "version": "1.0.0",
+  "description": "CouchDB views",
+  "license": "MIT",
+  "dependencies": {
+    "bluebird": "^3.3.5",
+    "nano": "^6.2.0",
+    "request": "^2.72.0",
+    "semver": "^5.1.0"
+  }
+}

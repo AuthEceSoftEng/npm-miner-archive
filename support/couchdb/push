@@ -1,0 +1,51 @@
+#!/usr/bin/env node
+
+var Promise = require('bluebird');
+var documents = require('./app');
+var info = require('./lib.js').getCredentials();
+
+function sendViews(task) {
+  var item = task.doc;
+  var db = require('nano')({
+    url: `http://${info.host}:5984/${item.db}`,
+    requestDefaults: {
+      auth: info.auth
+    }
+  });
+
+  db.insert = Promise.promisify(db.insert);
+  db.get = Promise.promisify(db.get);
+
+  return db.get(item._id)
+  .then((doc) => {
+    item._rev = doc._rev;
+    return db.insert(item);
+  })
+  .then((doc) => {
+    return Promise.resolve(doc)
+  })
+  .catch((err) => {
+    // if the design doc doens't exist, create it
+    if (err.message == 'deleted' || err.statusCode === 404) {
+      db.insert(item, (err, doc) => {
+        if (err) {
+          return Promise.reject(err)
+        }
+
+        return Promise.resolve()
+      });
+    } else {
+      return Promise.reject(err)
+    }
+  });
+}
+
+var jobs = []
+
+for (var i = 0; i < documents.length; i++) {
+  jobs.push(sendViews({ doc:documents[i] }));
+}
+
+Promise.all(jobs)
+.then(() => console.log('All databases updated.'))
+.catch((err) => { throw err })

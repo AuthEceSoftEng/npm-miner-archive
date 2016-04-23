@@ -1,0 +1,27 @@
+#!/usr/bin/env node
+
+var info = require('./lib.js').getCredentials();
+var Promise = require('bluebird');
+var post = Promise.promisify(require('request').post);
+
+var remoteDB = 'https://skimdb.npmjs.com/registry';
+
+post({
+  url: `http://${info.host}:5984/_replicate`,
+  json: true,
+  body: {
+    continuous: true,
+    source: remoteDB,
+    target: 'registry'
+  },
+  auth: info.auth
+})
+.then((response) => {
+  console.log(response.body);
+})
+.catch((err) => {
+  throw err;
+});
+
+
+
