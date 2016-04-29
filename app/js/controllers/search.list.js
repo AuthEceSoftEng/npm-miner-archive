@@ -1,12 +1,21 @@
 'use strict'
 
 const controllersModule = require('./_index')
+const _ = require('lodash')
 
 function ListCtrl ($stateParams, $state, RegistryDatabase, toastr) {
   'ngInject'
 
-  // Used for rendering in the view.
-  this.results = $stateParams.results
+  // Pagination
+  this.totalResultCount = $stateParams.results.length
+  this.currentPage = 1
+  this.pageSize = 15
+  this.allMatches = _.chunk($stateParams.results, this.pageSize)
+  this.results = this.allMatches[0]
+
+  this.changePage = () => {
+    this.results = this.allMatches[this.currentPage - 1]
+  }
 
   // Display the results for a package.
   this.fetchPackage = (name) => {

@@ -97,10 +97,16 @@ exports.search = function (request, reply) {
   this.gremlin.execute(script, bindings)
   .then((response) => {
     let data = response.map((pkg) => {
-      return {
-        name: pkg.name[0],
-        description: pkg.description[0]
+      var temp = {}
+      temp.name = pkg.name[0]
+
+      if (pkg.hasOwnProperty('description')) {
+        temp.description = pkg.description[0]
+      } else {
+        temp.description = 'Description field is missing'
       }
+
+      return temp
     })
 
     reply(data)

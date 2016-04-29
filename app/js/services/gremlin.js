@@ -79,7 +79,7 @@ function Gremlin ($http, $log) {
      * @param {String} text The text we search for.
      * @param {Number} limit The maximum number of results that will be returned.
      */
-    searchText (text, limit = 20) {
+    searchText (text, limit = 500) {
       return new Promise((resolve, reject) => {
         $http.get('/api/graphs/search', { params: { text, limit } })
         .success((response) => { resolve(response) })

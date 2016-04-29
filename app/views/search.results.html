@@ -1,5 +1,11 @@
 
+<div class="row">
+  <div class="col-md-12">
+    <h5 style="color: gray"> {{ list.totalResultCount }} matches were found </h5>
+  </div>
+</div>
 
+<hr>
 
 <div class="row" ng-repeat="item in list.results">
   <div class="col-md-12">
@@ -8,3 +14,28 @@
     </h5>
   </div>
 </div>
+
+<!--Show pagination with enough results-->
+<div ng-if="list.totalResultCount > list.pageSize">
+
+  <hr>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="text-center">
+        <uib-pagination total-items="list.totalResultCount"
+          ng-model="list.currentPage"
+          ng-change="list.changePage()"
+          items-per-page="list.pageSize"
+          max-size="5"
+          num-pages="list.allMatches.length"
+          class="pagination-md"
+          boundary-link-numbers="true">
+        </uib-pagination>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="col-xs-12 horizontal-spacer-md"></div>

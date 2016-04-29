@@ -64,7 +64,7 @@ var GraphRoutes = [{
     validate: {
       query: {
         text: Joi.string().required(),
-        limit: Joi.number().integer().max(20).required()
+        limit: Joi.number().integer().max(500).required()
       }
     }
   }
