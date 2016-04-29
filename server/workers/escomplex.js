@@ -87,7 +87,14 @@ AMQP.connect(`amqp://${Config.rabbitmq.user}:${Config.rabbitmq.pass}@${Config.ra
       // End of the current task.
       ch.ack(msg)
     })
-    .catch((err) => { log.error(err) })
+    .catch((err) => {
+      if (err.statusCode === 503) {
+        log.error('CouchDB is not responsive. Restarting...')
+        process.exit(1);
+      } else {
+        log.error(err)
+      }
+    })
   }, { noAck: false })
 })
 .catch((err) => { log.error(err) })
