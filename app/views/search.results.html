@@ -1,7 +1,23 @@
 
 <div class="row">
-  <div class="col-md-12">
+  <div class="col-md-3">
     <h5 style="color: gray"> {{ list.totalResultCount }} matches were found </h5>
+  </div>
+  <div class="col-md-3">
+    <ui-select ng-model="list.sorting"
+               on-select="list.sortBy($select.selected)"
+               style="width: 100%">
+      <ui-select-match placeholder="Sort by"> {{ $select.selected | readable }} </ui-select-match>
+      <ui-select-choices repeat="sorting in list.sortings">
+        <div ng-bind-html="sorting | readable"></div>
+      </ui-select-choices>
+    </ui-select>
+  </div>
+  <div class="col-md-3">
+    <a class="btn" ng-class="{true: 'btn-primary', false: 'btn-default'}[!list.active]"
+       ng-click="list.toggleActive()">
+      {{ !list.active && 'Active' || 'All' }}
+    </a>
   </div>
 </div>
 

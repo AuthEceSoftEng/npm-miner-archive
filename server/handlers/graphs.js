@@ -85,14 +85,17 @@ exports.getNode = function (request, reply) {
 exports.search = function (request, reply) {
   let bindings = {
     text: request.query.text,
-    limit: request.query.limit
+    lim: request.query.limit
   }
 
-  let script = `
-  g.V().has('keywords', textContains(text))
-  .limit(limit)
-  .valueMap('name', 'description')
-  `
+  let script = 'searchPackages(text, lim)'
+
+  var properties = [
+    'maintainability',
+    'pageRank',
+    'cyclomatic',
+    'releaseRate'
+  ]
 
   this.gremlin.execute(script, bindings)
   .then((response) => {
@@ -104,6 +107,21 @@ exports.search = function (request, reply) {
         temp.description = pkg.description[0]
       } else {
         temp.description = 'Description field is missing'
+      }
+
+      if (pkg.latest !== undefined) {
+        temp.latest = pkg.latest[0]
+      } else {
+        temp.latest = 0
+      }
+
+      for (var i = 0; i < properties.length; i++) {
+        let prop = properties[i]
+        if (pkg.hasOwnProperty(prop)) {
+          temp[properties[i]] = parseFloat(pkg[prop][0]).toFixed(2)
+        } else {
+          temp[properties[i]] = 0
+        }
       }
 
       return temp

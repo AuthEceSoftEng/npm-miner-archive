@@ -26,7 +26,13 @@ const variableToName = {
   'similarSnippets': 'Similar Code Snippets',
   'commentTags': 'Comment Tags',
   'bugs': 'Bugs',
-  'difficulty': 'Difficulty'
+  'difficulty': 'Difficulty',
+  'dependencies': 'Dependencies',
+  'dependants': 'Dependants',
+  'releaseRate': 'Release Rate',
+  'latestRelease': 'Latest Release',
+  'active': 'Active',
+  'latest': 'Latest release'
 }
 
 function readable () {
