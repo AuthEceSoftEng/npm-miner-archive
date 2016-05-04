@@ -4,6 +4,7 @@
 
 const Config = require('../config')
 const bunyan = require('bunyan')
+const Semver = require('semver')
 const log = bunyan.createLogger({
   name: 'graph-feeder',
   streams: [{
@@ -43,7 +44,6 @@ amqp.connect(`amqp://${Config.rabbitmq.user}:${Config.rabbitmq.pass}@${Config.ra
       ch.ack(msg)
     })
     .catch((err) => {
-      log.error(err)
       throw err
     })
   }, {noAck: false})
@@ -52,6 +52,32 @@ amqp.connect(`amqp://${Config.rabbitmq.user}:${Config.rabbitmq.pass}@${Config.ra
   log.fatal(err)
   throw err
 })
+
+// Compute the release rate for this package.
+function computeReleaseRate (doc) {
+  if (!doc.time) {
+    return 0
+  }
+
+  const releases = doc.time
+  const created = new Date(releases.created)
+  const now = new Date()
+  const versions = Object.keys(releases).filter(version => Semver.valid(version))
+
+  return (diffInDays(now, created) / versions.length).toFixed(1)
+}
+
+function diffInDays (first, second) {
+  var diff = Math.abs(first.getTime() - second.getTime())
+  return Math.ceil(diff / (1000 * 3600 * 24))
+}
+
+function getLatestRelease (doc) {
+  if (!doc.time) {
+    return 0
+  }
+  return (new Date(doc.time.modified)).getTime()
+}
 
 function setDefaults (doc) {
   const availableProperties = Object.keys(doc)
@@ -65,10 +91,15 @@ function setDefaults (doc) {
     'dependencies',
     'devDependencies',
     'maintainers',
-    'keywords'
+    'keywords',
+    'releaseRate',
+    'latest'
   ]
-  const toDelete = _.difference(availableProperties, validProperties)
 
+  doc.releaseRate = computeReleaseRate(doc)
+  doc.latest = getLatestRelease(doc)
+
+  const toDelete = _.difference(availableProperties, validProperties)
   for (let i = 0; i < toDelete.length; i++) {
     delete doc[toDelete[i]]
   }

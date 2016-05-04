@@ -47,6 +47,9 @@ function updateGraphDatabase (pkg) {
     .then((doc) => {
       let latest = doc['dist-tags'].latest
       let latestVersion = doc.versions[latest]
+      if (doc.time) {
+        latestVersion.time = doc.time
+      }
       if (!latestVersion.readme && doc.readme) {
         latestVersion.readme = doc.readme
       }
