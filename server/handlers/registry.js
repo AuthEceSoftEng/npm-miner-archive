@@ -8,6 +8,10 @@ exports.getPackage = function (request, reply) {
       reply(data)
     })
     .catch((err) => {
-      reply(Boom.notFound(err, err.statusCode))
+      if (err.statusCode === 404) {
+        reply(Boom.notFound(`${request.params.name} is missing`))
+      } else {
+        reply(Boom.wrap(err, err.statusCode))
+      }
     })
 }

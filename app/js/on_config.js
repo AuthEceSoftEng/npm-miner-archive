@@ -1,11 +1,28 @@
 'use strict'
 
 var Settings = require('./constants')
+var angular = require('angular')
 
-function OnConfig ($stateProvider, $locationProvider, $urlRouterProvider, uiSelectConfig, $logProvider) {
+function OnConfig ($stateProvider, $locationProvider, $urlRouterProvider, uiSelectConfig, $logProvider, toastrConfig) {
   'ngInject'
 
   uiSelectConfig.theme = 'bootstrap'
+
+  angular.extend(toastrConfig, {
+    autoDismiss: true,
+    maxOpened: 1,
+    newestOnTop: true,
+    positionClass: 'toast-bottom-left',
+    preventOpenDuplicates: true,
+    timeOut: 4000,
+    closeButton: true,
+    iconClasses: {
+      error: 'toaster-panel',
+      info: 'toaster-panel',
+      success: 'toaster-panel',
+      warning: 'toaster-panel'
+    }
+  })
 
   $urlRouterProvider.otherwise('/')
   $locationProvider.html5Mode(true)
@@ -20,6 +37,7 @@ function OnConfig ($stateProvider, $locationProvider, $urlRouterProvider, uiSele
       url: '/',
       template: `
       <div ui-view="search" ng-show="$state.includes('main.search')"> </div>
+      <div ui-view="compare" ng-show="$state.includes('main.comparison')"> </div>
       <div ui-view="graphs" ng-show="$state.includes('main.graphs')"> </div>
       <div ui-view="about" ng-show="$state.includes('main.about')"> </div>
     `,
@@ -46,7 +64,19 @@ function OnConfig ($stateProvider, $locationProvider, $urlRouterProvider, uiSele
         results: {}
       }
     })
-    .state('main.search.comparison', {
+    .state('main.comparison', {
+      url: 'compare/',
+      title: 'Compare packages',
+      sticky: true,
+      dsr: true,
+      views: {
+        'compare': {
+          templateUrl: 'comparison.input.html',
+          controller: 'ComparisonInputCtrl as comparisonInput'
+        }
+      }
+    })
+    .state('main.comparison.results', {
       url: ':firstPackage/vs/:secondPackage',
       templateUrl: 'comparison.results.html',
       controller: 'ComparisonCtrl as cmp',
@@ -81,7 +111,8 @@ function OnConfig ($stateProvider, $locationProvider, $urlRouterProvider, uiSele
           })
           .catch((err) => {
             if (err.statusCode === 404) {
-              toastr.warning(err.message, 'Warning')
+              let pkg = err.message.split(' ')[0]
+              toastr.error(`${pkg} has not been analyzed yet.`, '404')
             } else {
               toastr.error(err.message, 'Error')
             }
@@ -118,7 +149,7 @@ function OnConfig ($stateProvider, $locationProvider, $urlRouterProvider, uiSele
         eslintData: function ($stateParams, ESLintService) {
           return ESLintService.getSummary($stateParams.query)
           .then((results) => { return Promise.resolve(results) })
-          .catch((err) => { return undefined })
+          .catch(() => { return })
         },
         registryData: function ($stateParams, RegistryDatabase) {
           return RegistryDatabase.get($stateParams.query)
@@ -128,12 +159,12 @@ function OnConfig ($stateProvider, $locationProvider, $urlRouterProvider, uiSele
         jsinspectData: function ($stateParams, JSInspectService) {
           return JSInspectService.get($stateParams.query)
           .then((results) => { return Promise.resolve(results) })
-          .catch((err) => { return undefined })
+          .catch(() => { return })
         },
         todoData: function ($stateParams, TodoService) {
           return TodoService.get($stateParams.query)
           .then((results) => { return Promise.resolve(results) })
-          .catch((err) => { return undefined })
+          .catch(() => { return })
         }
       },
       params: {

@@ -1,0 +1,43 @@
+
+<div class="container">
+	<div class="row">
+    <div class="col-xs-12 horizontal-spacer-sm"></div>
+		<form>
+      <input type="hidden" name="from" id="from" value="/">
+      <div class="col-xs-4 col-xs-offset-2">
+        <div class="compare-wrapper">
+          <input ng-model="comparisonInput.first"
+                 id="first-package"
+                 class="form-control input-lg compare"
+                 type="text"
+                 placeholder="First package">
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="compare-wrapper">
+          <input ng-model="comparisonInput.second"
+                 id="second-package"
+                 class="form-control input-lg compare"
+                 type="text"
+                 placeholder="Second package">
+        </div>
+      </div>
+      <div class="col-xs-2"></div>
+
+      <div class="col-xs-12 horizontal-spacer-sm"></div>
+
+      <div class="col-xs-4 col-xs-offset-4 text-center">
+        <input type="submit"
+               value="COMPARE"
+               class="btn btn-lg btn-block btn-primary"
+               ng-click="comparisonInput.search(comparisonInput.first, comparisonInput.second)">
+      </div>
+    </form>
+	</div>
+
+  <div class="col-xs-12 horizontal-spacer-sm"></div>
+
+  <!-- Resutls -->
+	<div ui-view></div>
+
+</div>
