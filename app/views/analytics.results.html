@@ -191,95 +191,97 @@
   </div>
 </div>
 
-<!--PACKAGE STRUCTURE-->
-<div class="col-xs-12 horizontal-spacer-md" ng-if="results.isDependencyTreeReady"></div>
-
-<div class="row" ng-if="results.isDependencyTreeReady">
-  <div class="col-md-12">
-    <div class="panel panel-primary">
-      <div class="panel-heading">
-        Package structure
-      </div>
-      <div class="panel-body">
-        <div dependency-tree-viewer
-           style="min-height: 550px; background-color: white"
-           matrix="results.dependencyTree.adjacencyMatrix"
-           filenames="results.dependencyTree.filenames">
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!--STRUCTURALLY SIMILAR CODE-->
-<div class="col-xs-12 horizontal-spacer-md" ng-if="results.copyPasteMatches"></div>
-
-<div class="row" ng-if="results.copyPasteMatches">
-  <div class="col-md-12">
-    <div class="panel panel-primary">
-      <div class="panel-heading">
-        <div class="pull-right">
-          <button class="btn btn-default" ng-if="!results.allMatchesShown" ng-click="results.toggleAllMatches()">
-            Show all
-          </button>
-          <button class="btn btn-default" ng-if="results.allMatchesShown" ng-click="results.toggleAllMatches()">
-            Show less
-          </button>
-        </div>
-        <div class="panel-title pull-left" style="padding-top: 5px"> Structurally similar code snippet </div>
-        <div class="clearfix"></div>
-      </div>
-      <div class="panel-body" style="padding: 0">
-        <diff-viewer ng-if="!results.allMatchesShown" diff="results.sampleDiff"></diff-viewer>
-        <jsinspect-viewer ng-if="results.allMatchesShown" matches="results.copyPasteMatches"></jsinspect-viewer>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!--COMMENT TAGS-->
-<div class="col-xs-12 horizontal-spacer-md" ng-if="results.todos"></div>
-
-<div class="row" ng-if="results.todos">
-  <div class="col-md-12">
-    <div class="panel panel-primary">
-      <div class="panel-heading">
-        <div class="pull-right">
-          <button class="btn btn-default" ng-if="!results.allCommentTagsShown" ng-click="results.toggleCommentTags()">
-            Show all
-          </button>
-          <button class="btn btn-default" ng-if="results.allCommentTagsShown" ng-click="results.toggleCommentTags()">
-            Show less
-          </button>
-        </div>
-        <div class="panel-title pull-left" style="padding-top: 5px"> Comments tags </div>
-        <div class="clearfix"></div>
-      </div>
-      <div class="panel-body" style="padding: 0">
-        <div class="list-group" ng-if="!results.allCommentTagsShown">
-          <a href="#" class="list-group-item" ng-repeat="todo in results.sampleTodos">
-            <h4 class="list-group-item-heading"><strong>{{ todo.kind }}</strong>: {{ todo.text }}</h4>
-            <p class="list-group-item-text"> {{ todo.file }}@{{ todo.line }}</p>
-          </a>
-        </div>
-        <todos-viewer ng-if="results.allCommentTagsShown" todos="results.todos"></todos-viewer>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="col-xs-12 horizontal-spacer-md" ng-if="results.todos"></div>
-
 <!--ADVANCED SECTION-->
-<div class="row" ng-if="!results.isAdvancedSectionReady">
+<div class="row">
   <div class="col-md-4 col-md-offset-4 text-center">
-    <button type="button" class="btn btn-default btn-lg btn-block" ng-click="results.showAdvancedSection()">
-      <span> See more </span>
+    <button type="button" class="btn btn-default btn-lg btn-block" ng-click="results.toggleAdvancedSection()">
+      <span ng-if="!results.isAdvancedSectionReady"> See more </span>
+      <span ng-if="results.isAdvancedSectionReady"> See less </span>
     </button>
   </div>
 </div>
 
 <div ng-if="results.isAdvancedSectionReady">
+
+  <!--PACKAGE STRUCTURE-->
+  <div class="col-xs-12 horizontal-spacer-md" ng-if="results.isDependencyTreeReady"></div>
+
+  <div class="row" ng-if="results.isDependencyTreeReady">
+    <div class="col-md-12">
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          Package structure
+        </div>
+        <div class="panel-body">
+          <div dependency-tree-viewer
+            style="min-height: 550px; background-color: white"
+            matrix="results.dependencyTree.adjacencyMatrix"
+            filenames="results.dependencyTree.filenames">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--STRUCTURALLY SIMILAR CODE-->
+  <div class="col-xs-12 horizontal-spacer-md" ng-if="results.copyPasteMatches"></div>
+
+  <div class="row" ng-if="results.copyPasteMatches">
+    <div class="col-md-12">
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <div class="pull-right">
+            <button class="btn btn-default" ng-if="!results.allMatchesShown" ng-click="results.toggleAllMatches()">
+              Show all
+            </button>
+            <button class="btn btn-default" ng-if="results.allMatchesShown" ng-click="results.toggleAllMatches()">
+              Show less
+            </button>
+          </div>
+          <div class="panel-title pull-left" style="padding-top: 5px"> Structurally similar code snippet </div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="panel-body" style="padding: 0">
+          <diff-viewer ng-if="!results.allMatchesShown" diff="results.sampleDiff"></diff-viewer>
+          <jsinspect-viewer ng-if="results.allMatchesShown" matches="results.copyPasteMatches"></jsinspect-viewer>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--COMMENT TAGS-->
+  <div class="col-xs-12 horizontal-spacer-md" ng-if="results.todos"></div>
+
+  <div class="row" ng-if="results.todos">
+    <div class="col-md-12">
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <div class="pull-right">
+            <button class="btn btn-default" ng-if="!results.allCommentTagsShown" ng-click="results.toggleCommentTags()">
+              Show all
+            </button>
+            <button class="btn btn-default" ng-if="results.allCommentTagsShown" ng-click="results.toggleCommentTags()">
+              Show less
+            </button>
+          </div>
+          <div class="panel-title pull-left" style="padding-top: 5px"> Comments tags </div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="panel-body" style="padding: 0">
+          <div class="list-group" ng-if="!results.allCommentTagsShown">
+            <a href="#" class="list-group-item" ng-repeat="todo in results.sampleTodos">
+              <h4 class="list-group-item-heading"><strong>{{ todo.kind }}</strong>: {{ todo.text }}</h4>
+              <p class="list-group-item-text"> {{ todo.file }}@{{ todo.line }}</p>
+            </a>
+          </div>
+          <todos-viewer ng-if="results.allCommentTagsShown" todos="results.todos"></todos-viewer>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xs-12 horizontal-spacer-md" ng-if="results.todos"></div>
+
   <!--METRIC HISTOGRAM-->
   <div class="row">
     <div class="col-md-12">
@@ -302,11 +304,11 @@
               <line-chart
                 type="'column'"
                 zoom-type="'x'"
-                data="results.histogram.frequency"
-                labels="results.histogram.values"
-                plot-options="results.histogram.options"
-                plotlines="results.histogram.plotlines"
-                title="results.histogram.title">
+                data="results.histogram.plot.frequency"
+                labels="results.histogram.plot.values"
+                plot-options="results.histogram.plot.options"
+                plotlines="results.histogram.plot.plotlines"
+                title="results.histogram.plot.title">
               </line-chart>
             </div>
           </div>
@@ -328,10 +330,10 @@
     </div>
   </div>
 
-  <div class="col-xs-12 horizontal-spacer-sm" ng-if="results.eslint.summary"></div>
+  <div class="col-xs-12 horizontal-spacer-sm" ng-if="results.eslint.isReady"></div>
 
   <!--ESLINT VIEWER-->
-  <div class="row" ng-if="results.eslint.summary">
+  <div class="row" ng-if="results.eslint.isPlotReady">
     <div class="col-md-12">
       <div class="panel panel-primary">
         <div class="panel-heading">
@@ -349,7 +351,7 @@
     </div>
   </div>
 
-  <div class="row" ng-if="results.eslint.summary">
+  <div class="row" ng-if="results.eslint.isReady">
     <div class="col-md-12">
       <div eslint-trends-viewer
         files="results.eslint.files.filenames"
@@ -360,3 +362,5 @@
   </div>
 
 </div>
+
+<div class="col-xs-12 horizontal-spacer-md"></div>

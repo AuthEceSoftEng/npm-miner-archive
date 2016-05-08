@@ -77,7 +77,7 @@ function AnalyticsResultsCtrl (escomplexData, eslintData, registryData, jsinspec
   }).concat(AppSettings.histogramGraphMetrics.map((m) => {
     return { name: m, type: 'Graph Metrics' }
   }))
-  this.histogram.metric = _.shuffle(this.histogram.metrics)[0]
+  this.histogram.metric = this.histogram.metrics[0]
 
   /**
    * OVERVIEW PANEL
@@ -165,6 +165,9 @@ function AnalyticsResultsCtrl (escomplexData, eslintData, registryData, jsinspec
     this.eslint = {}
     // FIXME This variable is already used
     this.eslint.summary = eslintData
+    this.eslint.isReady = false
+    this.eslint.isPlotReady = false
+    this.eslint.versions = []
 
     Promise.all([
       ESLintService.getVersions(this.name),
@@ -189,7 +192,14 @@ function AnalyticsResultsCtrl (escomplexData, eslintData, registryData, jsinspec
       this.miscMetrics.lintErrors = results[2].errors[historySize - 1]
       this.miscMetrics.lintWarnings = results[2].warnings[historySize - 1]
     })
-    .then(() => { this.eslint.isReady = true })
+    .then(() => {
+      this.eslint.isReady = true
+
+      // If there is enough data to show.
+      if (this.eslint.versions.length > 1) {
+        this.eslint.isPlotReady = true
+      }
+    })
     .catch((err) => {
       if (err !== '[eslint] No errors found.') {
         $log.error(err)
@@ -245,7 +255,7 @@ function AnalyticsResultsCtrl (escomplexData, eslintData, registryData, jsinspec
       }
 
       // Configuration object for the histogram plot.
-      this.histogram = {
+      this.histogram.plot = {
         title: `Histogram of ${this.histogram.metric.name}`,
         values: data.values,
         options: { column: { pointPadding: 0, borderWidth: 0, groupPadding: 0, shadow: false } },
@@ -270,8 +280,12 @@ function AnalyticsResultsCtrl (escomplexData, eslintData, registryData, jsinspec
 
   this.groupByType = (item) => { return item.type }
 
-  this.showAdvancedSection = () => {
-    this.isAdvancedSectionReady = true
+  this.toggleAdvancedSection = () => {
+    this.isAdvancedSectionReady = !this.isAdvancedSectionReady
+
+    if (!this.isAdvancedSectionReady) {
+      return
+    }
 
     Gremlin.getGraphMetricsOverview(this.name)
     .then((metrics) => {
