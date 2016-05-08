@@ -67,16 +67,16 @@ server.register([
   {
     register: require('good'),
     options: {
-      opsInterval: 1000,
-      reporters: [{
-        reporter: require('good-console'),
-        events: {
-          log: '*',
-          response: '*',
-          request: '*',
-          error: '*'
-        }
-      }]
+      ops: false,
+      reporters: {
+        console: [{
+          module: 'good-console',
+          args: [{
+            format: 'DD/MM/YY-HH:mm:ss.SSS',
+            utc: false
+          }]
+        }, 'stdout']
+      }
     }
   }
 ], (err) => {
