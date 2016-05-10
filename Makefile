@@ -56,6 +56,7 @@ EXTERNAL_JS = node_modules/codemirror/mode/javascript/javascript.js \
 			  node_modules/dagre/dist/dagre.min.js \
 			  node_modules/linkurious/dist/plugins.js \
 			  node_modules/linkurious/dist/sigma.js \
+			  node_modules/jspdf/dist/jspdf.min.js \
 			  node_modules/codemirror/mode/groovy/groovy.js
 
 SCRIPTS := $(shell find app server -type f -name '*.js')

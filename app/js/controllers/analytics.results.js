@@ -1,8 +1,11 @@
 'use strict'
 
+/*globals jsPDF*/
+
 const controllersModule = require('./_index')
 const _ = require('lodash')
 const Utils = require('../utils/package-metrics')
+const html2canvas = require('html2canvas')
 
 /**
  * Converts the raw values of the x-axis to relative values.
@@ -306,6 +309,46 @@ function AnalyticsResultsCtrl (escomplexData, eslintData, registryData, jsinspec
    * Hide / show comment tags.
    */
   this.toggleCommentTags = () => { this.allCommentTagsShown = !this.allCommentTagsShown }
+
+  /**
+   * Export pdf report.
+   */
+  this.exportPDF = () => {
+    this.getCanvas().then((results) => {
+      var images = results.map((r) => {
+        return r.toDataURL('image/jpg')
+      })
+
+      var doc = new jsPDF()
+      doc.setFontSize(10)
+      doc.setFont('helvetica', 'normal')
+      doc.text(8, 10, `${this.name}@${this.latestVersion} - ${this.description}`)
+      doc.addImage(images[0], 'jpeg', 5, 15, 200, 55)
+      doc.addImage(images[1], 'jpeg', 7, 70, 197, 50)
+      doc.addImage(images[2], 'jpeg', 5, 130, 200, 110)
+      doc.save(`${this.name}-report.pdf`)
+    })
+    .catch((err) => { $log.error(err) })
+  }
+
+  this.getCanvas = () => {
+    var overview = document.getElementById('main-stats')
+    var main = document.getElementById('main-metrics')
+    var tables = document.getElementById('metric-tables')
+
+    var options = {
+      imageTimeout: 0,
+      removeContainer: true,
+      letterRendering: true,
+      background: undefined
+    }
+
+    return Promise.all([
+      html2canvas(overview, options),
+      html2canvas(main, options),
+      html2canvas(tables, options)
+    ])
+  }
 }
 
 controllersModule.controller('AnalyticsResultsCtrl', AnalyticsResultsCtrl)

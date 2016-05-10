@@ -6,14 +6,18 @@
     </div>
     <h4> <strong> {{ results.name }}@{{ results.latestVersion }} </strong> - {{ results.description  }}</h4>
   </div>
+  <div class="col-xs-12 horizontal-spacer-xs"></div>
+  <div class="col-md-2">
+    <button class="btn btn-default" ng-click="results.exportPDF()"> Export as pdf </button>
+  </div>
 </div>
 
 <div class="col-xs-12 horizontal-spacer-sm"></div>
 
-<div class="row">
+<div class="row" id="main-stats">
   <div class="col-md-12">
     <div class="panel panel-primary">
-      <div class="panel-heading">
+      <div class="panel-heading section-title">
         Package Overview
       </div>
       <div class="panel-body">
@@ -69,7 +73,7 @@
 <div class="col-xs-12 horizontal-spacer-md"></div>
 
 <!--ProgressBars-->
-<div class="row">
+<div class="row" id="main-metrics">
   <div class="col-md-4 text-center">
     <div class="progress-wrapper">
       <div class="circle-progress-text"> {{ results.maintainabilityCircle.value }}</div>
@@ -123,12 +127,12 @@
 <div class="col-xs-12 horizontal-spacer-md"></div>
 
 <!--TABLE LISTS-->
-<div class="row">
+<div class="row" id="metric-tables">
   <div class="col-md-4">
 
     <div class="panel panel-primary">
-      <div class="panel-heading">
-        Complexity Measures
+      <div class="panel-heading section-title">
+        Complexity Metrics
       </div>
       <div class="panel-body">
         <div class="row" ng-repeat="metric in results.complexityMetricsPercentages" ng-if="metric.name !== 'totalLOC' && metric.name !== 'totalSLOC'">
@@ -152,8 +156,8 @@
   <div class="col-md-4">
 
     <div class="panel panel-primary">
-      <div class="panel-heading">
-        Halstead Metrics
+      <div class="panel-heading section-title">
+        Halstead Measures
       </div>
       <div class="panel-body">
         <div class="row" ng-repeat="metric in results.halsteadMetricsPercentages">
@@ -177,7 +181,7 @@
   <div class="col-md-4">
 
     <div class="panel panel-primary">
-      <div class="panel-heading">
+      <div class="panel-heading section-title">
         Miscellaneous
       </div>
       <div class="panel-body">
