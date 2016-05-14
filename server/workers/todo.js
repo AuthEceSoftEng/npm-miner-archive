@@ -46,8 +46,11 @@ AMQP.connect(`amqp://${Config.rabbitmq.user}:${Config.rabbitmq.pass}@${Config.ra
 
     Joi.assert(data, serviceSchema)
 
+    log.info(`${data.name}@${data.version}...`)
+
     Promise.try(() => { return work(data) })
     .then(() => {
+      log.info(`${data.name}@${data.version}...✔`)
       ch.ack(msg)
     })
     .catch((err) => { log.error(err) })
@@ -55,81 +58,61 @@ AMQP.connect(`amqp://${Config.rabbitmq.user}:${Config.rabbitmq.pass}@${Config.ra
 })
 .catch((err) => { log.error(err) })
 
-var work = Promise.coroutine(function * (task) {
-  log.info(`${task.name}@${task.version}...`)
-
+function work (task) {
   var saveDirectory = `${DOWNLOAD_DIR}/${task.name}-${task.version}`
 
-  if (yield db.isAnalyzed(task)) {
-    log.info(`${task.name}@${task.version} is already analyzed.`)
-    return
-  }
-
-  var link
-
-  try {
-    link = yield Registry.getPackageUrl(task)
-  } catch (e) {
-    if (e.message.match(/deleted/)) {
-      log.warn('Package deleted')
-      return
-    } else {
-      throw e
+  return db.isAnalyzed(task)
+  .then((isAnalyzed) => {
+    if (isAnalyzed) {
+      throw new Error(`Package ${task.name}@${task.version} is already analyzed.`)
     }
-  }
 
-  if (link === 'not_found') {
-    log.warn('Package possibly deleted', {package: task.name, version: task.version})
-    return
-  }
+    return Registry.getPackageUrl(task)
+  })
+  .then((url) => {
+    if (url === 'not_found') {
+      throw new Error(`Package ${task.name}@${task.version} doesn't exist.`)
+    }
 
-  try {
-    var files = yield Download.getPackage(link, saveDirectory)
-  } catch (e) {
+    return Download.getPackage(url, saveDirectory)
+  })
+  .then((files) => {
+    if (files.length === 0) {
+      throw new Error(`No files retrieved for ${task.name}@${task.version}`)
+    }
+
+    var report = []
+
+    for (let i = 0; i < files.length; i++) {
+      var fileName = files[i].path.split(`${task.name}-${task.version}/`)[1]
+      var results = Leasot.parse({
+        ext: '.js',
+        content: files[i].content,
+        fileName,
+        customTags: ['HACK', 'BUG']
+      })
+
+      for (let j = 0; j < results.length; j++) {
+        report.push(results[j])
+      }
+    }
+
     shell.rm('-rf', saveDirectory)
 
-    if (e.message.match(/EISDIR/)) {
-      log.error(e)
-      return
-
-      // Returns 40x code
-    } else if (e.message.match(/40/)) {
-      log.error(e)
-      return
-    } else {
-      throw e
-    }
-  }
-
-  if (files.length === 0) {
-    log.warn('No files retrieved', task)
+    return db.save(task.name, task.version, report)
+  })
+  .catch((err) => {
     shell.rm('-rf', saveDirectory)
-    return
-  }
 
-  log.debug('Searching for todos')
-
-  var report = []
-
-  for (let i = 0; i < files.length; i++) {
-    var fileName = files[i].path.split(`${task.name}-${task.version}/`)[1]
-    var results = Leasot.parse({
-      ext: '.js',
-      content: files[i].content,
-      fileName,
-      customTags: ['HACK', 'BUG']
-    })
-
-    for (let j = 0; j < results.length; j++) {
-      report.push(results[j])
+    if (!err.message) {
+      throw err
     }
-  }
 
-  shell.rm('-rf', saveDirectory)
-
-  var res = yield db.save(task.name, task.version, report)
-
-  log.debug(res)
-
-  log.info(`${task.name}@${task.version}...✔`)
-})
+    if (err.message.match(/|doesn't exist|analyzed|deleted|EISDIR|40|No files/i)) {
+      log.warn(err.message)
+      return Promise.resolve()
+    } else {
+      throw err
+    }
+  })
+}

@@ -88,8 +88,8 @@ api.save = (name, version, data) => {
   })
 }
 
-api.isAnalyzed = Promise.coroutine(function * (pkg) {
-  return yield api.hasVersion(pkg.name, pkg.version)
-})
+api.isAnalyzed = function (pkg) {
+  return api.hasVersion(pkg.name, pkg.version)
+}
 
 module.exports = api

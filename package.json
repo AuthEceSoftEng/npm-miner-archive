@@ -81,6 +81,7 @@
     "semver": "^5.1.0",
     "shelljs": "^0.7.0",
     "ui-router-extras": "^0.1.0",
-    "ui-select": "^0.16.0"
+    "ui-select": "^0.16.0",
+    "workerpool": "^1.1.0"
   }
 }

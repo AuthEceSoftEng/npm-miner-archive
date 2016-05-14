@@ -95,16 +95,16 @@ api.hasVersion = (name, version) => {
   return api.view('metrics', 'availableVersions', {keys: [[name]]})
   .then((doc) => {
     if (_.isEmpty(doc.rows)) {
-      Promise.resolve(false)
+      return Promise.resolve(false)
     } else {
-      Promise.resolve(_.indexOf(doc.rows[0].value, version) >= 0)
+      return Promise.resolve(_.indexOf(doc.rows[0].value, version) >= 0)
     }
   })
   .catch((err) => {
     if (err.statusCode === 404) {
-      Promise.resolve(false)
+      return Promise.resolve(false)
     } else {
-      Promise.reject(err)
+      return Promise.reject(err)
     }
   })
 }
@@ -146,8 +146,8 @@ api.save = (name, version, data) => {
   .catch((err) => { return Promise.reject(err) })
 }
 
-api.isAnalyzed = Promise.coroutine(function * (pkg) {
-  return yield api.hasVersion(pkg.name, pkg.version)
-})
+api.isAnalyzed = function (pkg) {
+  return api.hasVersion(pkg.name, pkg.version)
+}
 
 module.exports = api

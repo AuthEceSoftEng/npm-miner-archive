@@ -47,19 +47,18 @@ module.exports = {
   },
 
   services: {
+    taskTimeout: 60,
     escomplex: {
       url: '/service/escomplex',
       dir: '/tmp/npm-miner/escomplex',
       sizeLimit: 30,
-      filesLimit: 300,
-      taskTimeout: 60000
+      filesLimit: 400
     },
     eslint: {
       url: '/service/eslint',
       dir: '/tmp/npm-miner/eslint',
       sizeLimit: 30,
-      filesLimit: 300,
-      taskTimeout: 30000
+      filesLimit: 400
     },
     todo: {
       url: '/service/todo',
@@ -67,8 +66,7 @@ module.exports = {
     },
     jsinspect: {
       url: '/service/jsinspect',
-      dir: '/tmp/npm-miner/jsinspect',
-      taskTimeout: 60000
+      dir: '/tmp/npm-miner/jsinspect'
     }
   }
 }
