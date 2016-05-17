@@ -8,7 +8,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" ui-sref="main.search">npm-miner</a>
+      <a class="navbar-brand"
+         style="cursor: pointer;"
+         ng-click="navbar.clean()">
+          npm-miner
+      </a>
+
 
       <!--Search for the graph section-->
       <form class="navbar-form navbar-left" role="search" ng-show="$state.includes('main.graphs')">
