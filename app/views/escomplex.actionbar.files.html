@@ -15,10 +15,10 @@
       </ui-select-choices>
     </ui-select>
 
-    <uib-accordion close-others="true">
-
-      <!--START ALL FILES-->
-      <uib-accordion-group heading="All files" is-open="true">
+    <!--START ALL FILES-->
+    <div class="panel panel-default" style="margin-top: 20px">
+      <div class="panel-heading"> All files </div>
+      <div class="panel-body">
         <span class="filter-type"> Quality metrics (Average) </span>
 
         <ui-select ng-model="ui.files.metricSelected"
@@ -41,10 +41,13 @@
             <div ng-bind-html="metric.split('.')[1] | capitalize"></div>
           </ui-select-choices>
         </ui-select>
-      </uib-accordion-group>
+      </div>
+    </div>
 
-      <!--START PER FILE-->
-      <uib-accordion-group heading="Per file" >
+    <!-- START PER FILE -->
+    <div class="panel panel-default" style="margin-top: 20px">
+      <div class="panel-heading"> Per file </div>
+      <div class="panel-body">
         <span class="filter-type"> Select a file </span>
 
         <ui-select ng-model="ui.files.fileSelected"
@@ -55,7 +58,7 @@
             <div ng-bind-html="file.path | relativePath"></div>
           </ui-select-choices>
         </ui-select>
-      </uib-accordion-group>
-    </uib-accordion>
+      </div>
+    </div>
   </div>
 </div>

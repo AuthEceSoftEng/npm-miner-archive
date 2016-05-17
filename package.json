@@ -39,7 +39,7 @@
     "angular-svg-round-progressbar": "^0.4.2",
     "angular-toastr": "^1.6.0",
     "angular-ui-bootstrap": "^1.0.0",
-    "angular-ui-router": "^0.2.15",
+    "angular-ui-router": "^0.3.0",
     "blipp": "^2.3.0",
     "bluebird": "^3.0.6",
     "boom": "^3.0.0",
@@ -81,7 +81,7 @@
     "semver": "^5.1.0",
     "shelljs": "^0.7.0",
     "ui-router-extras": "^0.1.0",
-    "ui-select": "^0.16.0",
+    "ui-select": "^0.17.1",
     "workerpool": "^1.1.0"
   }
 }
