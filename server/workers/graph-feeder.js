@@ -159,6 +159,11 @@ function savePackageToGraph (data) {
   var devDeps = Object.keys(data.devDependencies || {})
   var maintainers = []
 
+  // Remove duplicates from devDeps
+  devDeps = _.filter(devDeps, (d) => {
+    return _.indexOf(deps, d) === -1
+  })
+
   _.each(data.maintainers, (maintainer) => {
     maintainers.push(maintainer.name)
   })
