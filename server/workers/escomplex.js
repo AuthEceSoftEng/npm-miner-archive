@@ -115,7 +115,7 @@ function work (task) {
   .then((report) => {
     var bytes = (Sizeof(report) / (1024 * 1024)).toFixed(2)
     if (bytes > OBJECT_SIZE_LIMIT) {
-      throw new Error('Too big object for ${task.name}@${task.version} is ${OBJECT_SIZE_LIMIT - bytes} extra.')
+      throw new Error(`Too big object for ${task.name}@${task.version} is ${OBJECT_SIZE_LIMIT - bytes} extra.`)
     }
 
     return db.save(task.name, task.version, report)
@@ -135,7 +135,7 @@ function work (task) {
       throw err
     }
 
-    if (err.message.match(/|doesn't exist|analyzed|deleted|EISDIR|40|No files|Too many|big object|timed out/i)) {
+    if (err.message.match(/|doesn't exist|analyzed|deleted|EISDIR|No files|Too many|big object|timed out/i)) {
       log.warn(err.message)
       return Promise.resolve()
     } else {
