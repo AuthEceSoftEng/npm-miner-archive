@@ -154,8 +154,10 @@ function AnalyticsResultsCtrl (escomplexData, eslintData, registryData, jsinspec
         return $filter('relativePath')(report.path)
       })
 
-      // Show the graph
-      this.isDependencyTreeReady = true
+      // Show the graph if there are more than one files.
+      if (this.dependencyTree.filenames.length > 1) {
+        this.isDependencyTreeReady = true
+      }
     })
     .catch((err) => { $log.error(err) })
   }

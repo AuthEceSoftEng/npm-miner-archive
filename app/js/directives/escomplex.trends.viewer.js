@@ -179,7 +179,6 @@ function escomplexTrendsViewer ($log, $filter, ESComplexService, toastr, $rootSc
      * and display the value of the selected metric for all the files
      */
     scope.onSelectEscomplexVersion = () => {
-      $log.info('Version', scope.ui.files.versionSelected)
       ESComplexService.getFiles(scope.registry._id, scope.ui.files.versionSelected)
       .then((files) => { scope.files = files })
       .catch((err) => { $log.error(err) })
