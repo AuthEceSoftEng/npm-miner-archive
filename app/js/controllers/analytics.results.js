@@ -196,7 +196,11 @@ function AnalyticsResultsCtrl (escomplexData, eslintData, registryData, jsinspec
       this.miscMetrics.lintWarnings = results[2].warnings[historySize - 1]
     })
     .then(() => {
-      this.eslint.isReady = true
+      // At least a file must have some errors/warnings.
+      if (this.eslint.files.length > 0) {
+        this.eslint.isReady = true
+        return
+      }
 
       // If there is enough data to show.
       if (this.eslint.versions.length > 1) {
