@@ -17,6 +17,7 @@ const Boom = require('boom')
 var api = {}
 
 api.get = Promise.promisify(db.get)
+api.info = Promise.promisify(db.info)
 
 api.getLatestVersion = (name) => {
   log.debug(`Retrieving the latest version of ${name}`)

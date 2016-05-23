@@ -24,6 +24,7 @@ const Boom = require('boom')
 var api = {}
 
 api.get = Promise.promisify(db.get)
+api.info = Promise.promisify(db.info)
 api.insert = Promise.promisify(db.insert)
 api.view = Promise.promisify(db.view)
 

@@ -2,7 +2,7 @@
 
 const controllersModule = require('./_index')
 
-function NavbarCtrl ($log, $rootScope, $state) {
+function NavbarCtrl ($rootScope, $state) {
   'ngInject'
 
   this.proccessQuery = (query) => {
@@ -10,9 +10,9 @@ function NavbarCtrl ($log, $rootScope, $state) {
     $rootScope.$emit('navbar:search', query)
   }
 
+  // Show the home page/statistics
   this.clean = () => {
-    $rootScope.$emit('navbar:clean')
-    $state.go('main.search')
+    $state.go('main.search.landing')
   }
 }
 

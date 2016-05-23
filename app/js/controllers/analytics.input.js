@@ -3,15 +3,19 @@
 const controllersModule = require('./_index')
 const _ = require('lodash')
 
-function AnalyticsInputCtrl ($log, $state, $rootScope, toastr, Gremlin) {
+function AnalyticsInputCtrl ($log, $state, toastr, Gremlin, dbInfo, rankings) {
   'ngInject'
 
   this.description = 'Search for any npm package...'
+  this.query = ''
 
-  $rootScope.$on('navbar:clean', () => {
-    this.hideResults = true
-    this.query = undefined
-  })
+  // Landing page
+  this.dbInfo = dbInfo
+  this.rankings = rankings
+
+  this.goToPackage = (name) => {
+    $state.go('main.search.package', { query: name })
+  }
 
   this.search = (query) => {
     if (!query) {
@@ -21,10 +25,8 @@ function AnalyticsInputCtrl ($log, $state, $rootScope, toastr, Gremlin) {
     Gremlin.searchText(query)
     .then((results) => {
       if (_.isEmpty(results)) {
-        this.hideResults = true
         toastr.info(`No results found for ${query}`)
       } else {
-        this.hideResults = false
         $state.go('main.search.results', { results })
       }
     })
@@ -33,6 +35,8 @@ function AnalyticsInputCtrl ($log, $state, $rootScope, toastr, Gremlin) {
       toastr.error(`An error occured while searching for ${query}`, 'Error')
     })
   }
+
+  $state.go('main.search.landing')
 }
 
 controllersModule.controller('AnalyticsInputCtrl', AnalyticsInputCtrl)

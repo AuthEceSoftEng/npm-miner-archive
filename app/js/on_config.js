@@ -24,7 +24,6 @@ function OnConfig ($stateProvider, $locationProvider, $urlRouterProvider, uiSele
     }
   })
 
-  $urlRouterProvider.otherwise('/')
   $locationProvider.html5Mode(true)
 
   if (Settings.server.environment === 'production') {
@@ -51,15 +50,36 @@ function OnConfig ($stateProvider, $locationProvider, $urlRouterProvider, uiSele
       views: {
         'search': {
           templateUrl: 'analytics.input.html',
-          controller: 'AnalyticsInputCtrl as input'
+          controller: 'AnalyticsInputCtrl as input',
+          resolve: {
+            dbInfo: function (MetricsService) {
+              return MetricsService.getDatabaseInfo()
+            },
+            rankings: function (MetricsService) {
+              return MetricsService.getRankings()
+            }
+          }
+        }
+      }
+    })
+    // Front page statistics
+    .state('main.search.landing', {
+      url: 'info/',
+      views: {
+        'landing': {
+          templateUrl: 'global-stats.html'
         }
       }
     })
     .state('main.search.results', {
       url: 'results/',
       title: 'Search results',
-      templateUrl: 'search.results.html',
-      controller: 'ListCtrl as list',
+      views: {
+        'results': {
+          templateUrl: 'search.results.html',
+          controller: 'ListCtrl as list'
+        }
+      },
       params: {
         results: {}
       }
@@ -124,20 +144,19 @@ function OnConfig ($stateProvider, $locationProvider, $urlRouterProvider, uiSele
     })
     .state('main.search.package', {
       url: ':query/',
-      templateUrl: 'analytics.results.html',
-      controller: 'AnalyticsResultsCtrl as results',
+      views: {
+        'package': {
+          templateUrl: 'analytics.results.html',
+          controller: 'AnalyticsResultsCtrl as results'
+        }
+      },
       resolve: {
         escomplexData: function ($stateParams, toastr, ESComplexService) {
           return Promise.all([
             ESComplexService.getSummary($stateParams.query),
             ESComplexService.getMetricsSummary($stateParams.query)
           ])
-          .then((results) => {
-            return Promise.resolve({
-              summary: results[0],
-              metricsSummary: results[1]
-            })
-          })
+          .then(results => Promise.resolve({ summary: results[0], metricsSummary: results[1] }))
           .catch((err) => {
             if (err.statusCode === 404) {
               toastr.warning(`${$stateParams.query} has not been analyzed yet.`, 'Error')
@@ -148,23 +167,23 @@ function OnConfig ($stateProvider, $locationProvider, $urlRouterProvider, uiSele
         },
         eslintData: function ($stateParams, ESLintService) {
           return ESLintService.getSummary($stateParams.query)
-          .then((results) => { return Promise.resolve(results) })
-          .catch(() => { return })
+                              .then(results => Promise.resolve(results))
+                              .catch(err => console.log(err))
         },
         registryData: function ($stateParams, RegistryDatabase) {
           return RegistryDatabase.get($stateParams.query)
-          .then((results) => { return Promise.resolve(results) })
-          .catch((err) => { return Promise.reject(err) })
+                                 .then(results => Promise.resolve(results))
+                                 .catch(err => Promise.reject(err))
         },
         jsinspectData: function ($stateParams, JSInspectService) {
           return JSInspectService.get($stateParams.query)
-          .then((results) => { return Promise.resolve(results) })
-          .catch(() => { return })
+                                 .then(results => Promise.resolve(results))
+                                 .catch(err => console.log(err))
         },
         todoData: function ($stateParams, TodoService) {
           return TodoService.get($stateParams.query)
-          .then((results) => { return Promise.resolve(results) })
-          .catch(() => { return })
+                            .then(results => Promise.resolve(results))
+                            .catch(err => console.log(err))
         }
       },
       params: {
@@ -211,6 +230,8 @@ function OnConfig ($stateProvider, $locationProvider, $urlRouterProvider, uiSele
         }
       }
     })
+
+  $urlRouterProvider.otherwise('/')
 }
 
 module.exports = OnConfig

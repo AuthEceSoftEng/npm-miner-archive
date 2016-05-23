@@ -18,6 +18,8 @@
 
   <div class="col-xs-12 horizontal-spacer-sm"></div>
 
-  <!--main content-->
-  <div ui-view ng-if="!input.hideResults"></div>
+  <div ui-view="landing" ng-show="$state.includes('main.search.landing')"></div>
+  <div ui-view="results" ng-show="$state.includes('main.search.results')"></div>
+  <div ui-view="package" ng-show="$state.includes('main.search.package')"></div>
+
 </div>

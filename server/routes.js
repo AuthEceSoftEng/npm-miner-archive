@@ -230,6 +230,14 @@ var MetricsRoutes = [{
       }
     }
   }
+}, {
+  method: 'GET',
+  path: `${config.api.metrics.url}/dbinfo`,
+  handler: Metrics.getDatabaseInfo
+}, {
+  method: 'GET',
+  path: `${config.api.metrics.url}/rankings`,
+  handler: Metrics.getPackageRankings
 }]
 
 module.exports = HomeRoutes.concat(RegistryRoutes)

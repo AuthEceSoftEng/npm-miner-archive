@@ -1,6 +1,10 @@
 const Boom = require('boom')
 const _ = require('lodash')
 const Promise = require('bluebird')
+const Escomplex = require('../utils/couchdb/escomplex')
+const Eslint = require('../utils/couchdb/eslint')
+const JSInspect = require('../utils/couchdb/jsinspect')
+const Registry = require('../utils/couchdb/registry')
 
 'use strict'
 
@@ -32,6 +36,7 @@ const GRAPH_METRICS = [
 ]
 
 const METRICS = COMPLEXITY_METRICS.concat(HALSTEAD_MEASURES).concat(GRAPH_METRICS)
+const TITAN_METRICS = COMPLEXITY_METRICS.concat(HALSTEAD_MEASURES).concat(['pageRank'])
 
 function getPercentage (list, value) {
   var res = 0
@@ -151,7 +156,7 @@ exports.getPercentages = function (request, reply) {
 
       // Get the metrics for this package
       return Promise.all([
-        this.gremlin.execute(`g.V().has('name', '${name}').valueMap(${arrayToStr(METRICS)})`),
+        this.gremlin.execute(`g.V().has('name', '${name}').valueMap(${arrayToStr(TITAN_METRICS)})`),
         this.gremlin.execute(`g.V().has('name', '${name}').outE().count()`),
         this.gremlin.execute(`g.V().has('name', '${name}').inE().count()`)
       ])
@@ -181,7 +186,7 @@ exports.getPercentages = function (request, reply) {
     .catch((err) => reply(Boom.wrap(err)))
   } else {
     return Promise.all([
-      this.gremlin.execute(`g.V().has('name', '${name}').valueMap(${arrayToStr(METRICS)})`),
+      this.gremlin.execute(`g.V().has('name', '${name}').valueMap(${arrayToStr(TITAN_METRICS)})`),
       this.gremlin.execute(`g.V().has('name', '${name}').outE().count()`),
       this.gremlin.execute(`g.V().has('name', '${name}').inE().count()`)
     ])
@@ -207,3 +212,74 @@ exports.getPercentages = function (request, reply) {
   }
 }
 
+exports.getDatabaseInfo = function (request, reply) {
+  Promise.all([
+    Registry.info(),
+    Escomplex.info(),
+    Eslint.info(),
+    JSInspect.info()
+  ])
+  .then((results) => {
+    var total = results[0].doc_count
+    var info = {
+      escomplex: {
+        total: results[1].doc_count,
+        percentage: ((results[1].doc_count / total) * 100).toFixed(0)
+      },
+      eslint: {
+        total: results[2].doc_count,
+        percentage: ((results[2].doc_count / total) * 100).toFixed(0)
+      },
+      jsinspect: {
+        total: results[3].doc_count,
+        percentage: ((results[3].doc_count / total) * 100).toFixed(0)
+      }
+    }
+
+    reply(info)
+  })
+  .catch((err) => reply(Boom.wrap(err)))
+}
+
+exports.getPackageRankings = function (request, reply) {
+  var rankings = {
+    pageRank: [],
+    maintainability: [],
+    cyclomatic: []
+  }
+
+  Promise.all([
+    this.redis.getAsync('pageRankRankings'),
+    this.redis.getAsync('maintainabilityRankings'),
+    this.redis.getAsync('cyclomaticRankings')
+  ])
+  .then((results) => {
+    var pageRank = _.take(JSON.parse(results[0]), 10)
+    var maintainability = _.take(JSON.parse(results[1]), 10)
+    var cyclomatic = _.take(JSON.parse(results[2]), 10)
+
+    for (let i = 0; i < pageRank.length; i++) {
+      rankings.pageRank.push({
+        name: pageRank[i].name[0],
+        value: pageRank[i].pageRank[0].toFixed(2)
+      })
+    }
+
+    for (let i = 0; i < maintainability.length; i++) {
+      rankings.maintainability.push({
+        name: maintainability[i].name[0],
+        value: maintainability[i].maintainability[0].toFixed(2)
+      })
+    }
+
+    for (let i = 0; i < cyclomatic.length; i++) {
+      rankings.cyclomatic.push({
+        name: cyclomatic[i].name[0],
+        value: cyclomatic[i].cyclomatic[0].toFixed(2)
+      })
+    }
+
+    reply(rankings)
+  })
+  .catch((err) => reply(Boom.wrap(err)))
+}

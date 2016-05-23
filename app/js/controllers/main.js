@@ -2,9 +2,9 @@
 
 const controllersModule = require('./_index')
 
-function MainCtrl ($log, $state) {
+function MainCtrl ($state) {
   'ngInject'
-  $state.go('.search')
+  $state.go('main.search')
 }
 
 controllersModule.controller('MainCtrl', MainCtrl)
