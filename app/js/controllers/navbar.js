@@ -13,6 +13,7 @@ function NavbarCtrl ($rootScope, $state) {
   // Show the home page/statistics
   this.clean = () => {
     $state.go('main.search.landing')
+    $rootScope.$emit('search:input:clean')
   }
 }
 

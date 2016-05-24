@@ -3,7 +3,7 @@
 const controllersModule = require('./_index')
 const _ = require('lodash')
 
-function AnalyticsInputCtrl ($log, $state, toastr, Gremlin, dbInfo, rankings) {
+function AnalyticsInputCtrl ($rootScope, $log, $state, toastr, Gremlin, dbInfo, rankings) {
   'ngInject'
 
   this.description = 'Search for any npm package...'
@@ -12,6 +12,8 @@ function AnalyticsInputCtrl ($log, $state, toastr, Gremlin, dbInfo, rankings) {
   // Landing page
   this.dbInfo = dbInfo
   this.rankings = rankings
+
+  $rootScope.$on('search:input:clean', () => { this.query = '' })
 
   this.goToPackage = (name) => {
     $state.go('main.search.package', { query: name })
