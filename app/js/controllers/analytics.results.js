@@ -320,27 +320,21 @@ function AnalyticsResultsCtrl (escomplexData, eslintData, registryData, jsinspec
    * Export pdf report.
    */
   this.exportPDF = () => {
-    this.getCanvas().then((results) => {
-      var images = results.map((r) => {
-        return r.toDataURL('image/jpg')
-      })
+    this.getCanvas().then((result) => {
+      var image = result.toDataURL('image/jpg')
 
       var doc = new jsPDF()
       doc.setFontSize(10)
       doc.setFont('helvetica', 'normal')
-      doc.text(8, 10, `${this.name}@${this.latestVersion} - ${this.description}`)
-      doc.addImage(images[0], 'jpeg', 5, 15, 200, 55)
-      doc.addImage(images[1], 'jpeg', 7, 70, 197, 50)
-      doc.addImage(images[2], 'jpeg', 5, 130, 200, 110)
+      doc.text(5, 10, `${this.name}@${this.latestVersion} - ${this.description}`)
+      doc.addImage(image, 'jpeg', 5, 10, 200, 250)
       doc.save(`${this.name}-report.pdf`)
     })
     .catch((err) => { $log.error(err) })
   }
 
   this.getCanvas = () => {
-    var overview = document.getElementById('main-stats')
-    var main = document.getElementById('main-metrics')
-    var tables = document.getElementById('metric-tables')
+    var overview = document.getElementById('pdf-section')
 
     var options = {
       imageTimeout: 0,
@@ -349,11 +343,7 @@ function AnalyticsResultsCtrl (escomplexData, eslintData, registryData, jsinspec
       background: undefined
     }
 
-    return Promise.all([
-      html2canvas(overview, options),
-      html2canvas(main, options),
-      html2canvas(tables, options)
-    ])
+    return html2canvas(overview, options)
   }
 }
 
