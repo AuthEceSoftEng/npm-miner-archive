@@ -68,6 +68,39 @@ body {
     margin: 0;
 }
 
+.progress {
+    background-color: #DDD;
+}
+
+.comparison-mirror-progress-left {
+    font-weight: bold;
+    display: block;
+    float: right;
+    line-height: 30px;
+
+    .progress-center {
+        position: absolute;
+        display: block;
+        right: 40%;
+        font-size: 20px;
+        color: white;
+    }
+}
+
+.comparison-mirror-progress-right {
+    font-weight: bold;
+    display: block;
+    line-height: 30px;
+
+    .progress-center {
+        position: absolute;
+        display: block;
+        width: 100%;
+        font-size: 20px;
+        color: white;
+    }
+}
+
 .metric-description {
     color: gray;
 }
