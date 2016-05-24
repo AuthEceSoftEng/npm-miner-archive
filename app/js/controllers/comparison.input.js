@@ -5,6 +5,11 @@ const controllersModule = require('./_index')
 function ComparisonInputCtrl ($log, $state, toastr, RegistryDatabase) {
   'ngInject'
 
+  this.clear = () => {
+    this.first = ''
+    this.second = ''
+  }
+
   this.search = (first, second) => {
     if (!first) {
       toastr.warning('First package is missing', 'Missing parameter')

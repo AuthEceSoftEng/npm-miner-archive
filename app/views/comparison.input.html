@@ -27,10 +27,14 @@
       <div class="col-xs-12 horizontal-spacer-sm"></div>
 
       <div class="col-xs-4 col-xs-offset-4 text-center">
-        <input type="submit"
-               value="COMPARE"
-               class="btn btn-lg btn-block btn-primary"
-               ng-click="comparisonInput.search(comparisonInput.first, comparisonInput.second)">
+        <div class="col-xs-6">
+          <input type="submit" value="COMPARE" class="btn btn-lg btn-block btn-primary"
+                 ng-click="comparisonInput.search(comparisonInput.first, comparisonInput.second)">
+        </div>
+        <div class="col-xs-6">
+          <input type="submit" value="CLEAR" class="btn btn-lg btn-block btn-default"
+                 ng-click="comparisonInput.clear()">
+        </div>
       </div>
     </form>
 	</div>
