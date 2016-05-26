@@ -11,7 +11,7 @@
             <a  href="https://github.com/escomplex/escomplex" target="_blank"> ESCOMPLEX </a>
           </h4>
           <h3 class="overview-value">
-            {{ input.dbInfo.escomplex.total }} - {{ input.dbInfo.escomplex.percentage }}%
+            {{ input.dbInfo.escomplex.total | number }} - {{ input.dbInfo.escomplex.percentage }}%
           </h3>
         </div>
         <div class="col-md-4 text-center">
@@ -19,7 +19,7 @@
             <a href="https://github.com/eslint/eslint" target="_blank"> ESLINT </a>
           </h4>
           <h3 class="overview-value">
-            {{ input.dbInfo.eslint.total }} - {{ input.dbInfo.eslint.percentage }}%
+            {{ input.dbInfo.eslint.total | number }} - {{ input.dbInfo.eslint.percentage }}%
           </h3>
         </div>
         <div class="col-md-4 text-center">
@@ -27,7 +27,7 @@
             <a href="https://github.com/danielstjules/jsinspect" target="_blank"> JSINSPECT </a>
           </h4>
           <h3 class="overview-value">
-            {{ input.dbInfo.jsinspect.total }} - {{ input.dbInfo.jsinspect.percentage }}%
+            {{ input.dbInfo.jsinspect.total | number }} - {{ input.dbInfo.jsinspect.percentage }}%
           </h3>
         </div>
       </div>
@@ -78,6 +78,42 @@
             <a style="cursor: pointer" ng-click="input.goToPackage(pkg.name)"> {{ pkg.name }} </a>
           </li>
         </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12" style="margin-bottom: 20px">
+    <h2 class="text-center">  Metric Distribution  </h2>
+  </div>
+  <div class="col-xs-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <div class="pull-left" style="width: 350px">
+          <ui-select ng-model="input.histogram.metric" on-select="input.onHistogramSelectMetric($select.selected)">
+            <ui-select-match placeholder="Choose a graph metric..."> {{ $select.selected | readable }} </ui-select-match>
+            <ui-select-choices repeat="metric in input.histogram.metrics" >
+              <div ng-bind-html="metric | readable"></div>
+            </ui-select-choices>
+          </ui-select>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="panel-body" style="min-height: 500px; padding: 0">
+            <line-chart
+              type="'column'"
+              zoom-type="'x'"
+              data="input.histogram.plot.frequency"
+              labels="input.histogram.plot.values"
+              plot-options="input.histogram.plot.options"
+              plotlines="input.histogram.plot.plotlines"
+              title="input.histogram.plot.title">
+            </line-chart>
+          </div>
+        </div>
       </div>
     </div>
   </div>

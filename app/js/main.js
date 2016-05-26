@@ -16,6 +16,7 @@ require('angular-svg-round-progressbar')
 require('angular-toastr')
 require('angular-ui-bootstrap')
 require('angular-ui-router')
+require('angular-dynamic-locale')
 require('ng-material-floating-button/src/mfb-directive.js')
 require('ng-tags-input')
 require('ui-router-extras')
@@ -29,6 +30,7 @@ const requires = [
   'app.filters',
   'app.services',
   'ct.ui.router.extras',
+  'tmh.dynamicLocale',
   'ng-mfb',
   'ngAnimate',
   'ngSanitize',

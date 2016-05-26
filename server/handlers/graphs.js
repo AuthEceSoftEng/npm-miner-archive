@@ -4,7 +4,6 @@ const Boom = require('boom')
 const _ = require('lodash')
 const metrics = [
   'maintainability',
-  'cyclomaticDensity',
   'firstOrderDensity',
   'cyclomatic',
   'totalLOC',
