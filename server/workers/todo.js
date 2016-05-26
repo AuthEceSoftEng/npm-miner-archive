@@ -17,6 +17,7 @@ const log = Bunyan.createLogger({
 })
 const Download = require('../utils/download')
 const Registry = require('../utils/couchdb/registry')
+const Common = require('../utils/worker.common')
 const db = require('../utils/couchdb/todo')
 const Leasot = require('leasot')
 const Promise = require('bluebird')
@@ -104,15 +105,11 @@ function work (task) {
   .catch((err) => {
     shell.rm('-rf', saveDirectory)
 
-    if (!err.message) {
+    if (Common.isCriticalError(err)) {
       throw err
-    }
-
-    if (err.message.match(/|doesn't exist|analyzed|deleted|EISDIR|40|No files/i)) {
+    } else {
       log.warn(err.message)
       return Promise.resolve()
-    } else {
-      throw err
     }
   })
 }

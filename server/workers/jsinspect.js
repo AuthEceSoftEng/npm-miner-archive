@@ -15,6 +15,7 @@ const log = Bunyan.createLogger({
     stream: process.stdout
   }]
 })
+const Common = require('../utils/worker.common')
 const Download = require('../utils/download')
 const Registry = require('../utils/couchdb/registry')
 const db = require('../utils/couchdb/jsinspect')
@@ -100,15 +101,11 @@ function work (task) {
     // Stop the running worker
     Pool.clear(true)
 
-    if (!err.message) {
+    if (Common.isCriticalError(err)) {
       throw err
-    }
-
-    if (err.message.match(/|doesn't exist|analyzed|deleted|EISDIR|40|No files|timed out/i)) {
+    } else {
       log.warn(err.message)
       return Promise.resolve()
-    } else {
-      throw err
     }
   })
 }

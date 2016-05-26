@@ -10,7 +10,7 @@ client.execute = Promise.promisify(client.execute)
 
 console.log('Computing complexity averages.')
 
-client.execute('RedisClient.REDIS_HOST="192.168.0.5"; computeComplexityAverages()')
+client.execute('computeComplexityAverages()')
 .then((res) => {
   console.log('Computing complexity series')
   return client.execute('computeComplexitySeries()')
