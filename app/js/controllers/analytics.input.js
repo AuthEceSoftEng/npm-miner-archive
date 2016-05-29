@@ -12,7 +12,23 @@ function AnalyticsInputCtrl ($rootScope, $log, $filter, $state, toastr, Gremlin,
 
   // Landing page
   this.dbInfo = dbInfo
-  this.rankings = rankings
+  this.rankings = {
+    maintainability: {
+      data: rankings.maintainability,
+      current: 0,
+      active: _.take(rankings.maintainability, 10)
+    },
+    cyclomatic: {
+      data: rankings.cyclomatic,
+      current: 0,
+      active: _.take(rankings.cyclomatic, 10)
+    },
+    pageRank: {
+      data: rankings.pageRank,
+      current: 0,
+      active: _.take(rankings.pageRank, 10)
+    }
+  }
   this.histogram = {}
 
   // Should be initialized with maintainability on state load.
@@ -38,6 +54,28 @@ function AnalyticsInputCtrl ($rootScope, $log, $filter, $state, toastr, Gremlin,
     Gremlin.getHistogram(metric)
     .then(data => this.setUpPlot(metric, data))
     .catch(err => $log.error(err))
+  }
+
+  this.showPreviousRow = (metric) => {
+    if (this.rankings[metric].current === 0) {
+      return
+    }
+
+    this.rankings[metric].current -= 1
+    var index = this.rankings[metric].current
+
+    this.rankings[metric].active = this.rankings[metric].data.slice(index * 10, index * 10 + 10)
+  }
+
+  this.showNextRow = (metric) => {
+    if (this.rankings[metric].current === 4) {
+      return
+    }
+
+    this.rankings[metric].current += 1
+    var index = this.rankings[metric].current
+
+    this.rankings[metric].active = this.rankings[metric].data.slice(index * 10, index * 10 + 10)
   }
 
   this.search = (query) => {

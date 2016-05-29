@@ -254,9 +254,9 @@ exports.getPackageRankings = function (request, reply) {
     this.redis.getAsync('cyclomaticRankings')
   ])
   .then((results) => {
-    var pageRank = _.take(JSON.parse(results[0]), 10)
-    var maintainability = _.take(JSON.parse(results[1]), 10)
-    var cyclomatic = _.take(JSON.parse(results[2]), 10)
+    var pageRank = JSON.parse(results[0])
+    var maintainability = JSON.parse(results[1])
+    var cyclomatic = JSON.parse(results[2])
 
     for (let i = 0; i < pageRank.length; i++) {
       rankings.pageRank.push({

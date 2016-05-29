@@ -52,12 +52,26 @@
       <div class="panel-heading"> <h4> Maintainability </h4> </div>
       <div class="panel-body" style="padding: 0">
         <ul class="list-group" style="margin: 0">
-          <li class="list-group-item" ng-repeat="pkg in input.rankings.maintainability">
+          <li class="list-group-item" ng-repeat="pkg in input.rankings.maintainability.active">
             <span class="pull-right"> {{ pkg.value }}</span>
-            {{ $index + 1 }}.
+            {{ input.rankings.maintainability.current * 10 + $index + 1 }}.
             <a style="cursor: pointer" ng-click="input.goToPackage(pkg.name)"> {{ pkg.name }} </a>
           </li>
         </ul>
+      </div>
+      <div class="panel-footer" style="margin: 0; padding: 0">
+        <div class="text-center">
+          <nav>
+            <ul class="pager ranking-pager">
+              <li>
+                <a href="#" ng-click="input.showPreviousRow('maintainability')"> Previous </a>
+              </li>
+              <li>
+                <a href="#" ng-click="input.showNextRow('maintainability')"> Next </a>
+              </li>
+            </ul>
+          </nav>
+      </div>
       </div>
     </div>
   </div>
@@ -66,12 +80,26 @@
       <div class="panel-heading"> <h4> PageRank </h4> </div>
       <div class="panel-body" style="padding: 0">
         <ul class="list-group" style="margin: 0">
-          <li class="list-group-item" ng-repeat="pkg in input.rankings.pageRank">
+          <li class="list-group-item" ng-repeat="pkg in input.rankings.pageRank.active">
             <span class="pull-right"> {{ pkg.value }}</span>
-            {{ $index + 1 }}.
+            {{ input.rankings.pageRank.current * 10 + $index + 1 }}.
             <a style="cursor: pointer" ng-click="input.goToPackage(pkg.name)"> {{ pkg.name }} </a>
           </li>
         </ul>
+      </div>
+      <div class="panel-footer" style="margin: 0; padding: 0">
+        <div class="text-center">
+          <nav>
+            <ul class="pager ranking-pager">
+              <li>
+                <a href="#" ng-click="input.showPreviousRow('pageRank')"> Previous </a>
+              </li>
+              <li>
+                <a href="#" ng-click="input.showNextRow('pageRank')"> Next </a>
+              </li>
+            </ul>
+          </nav>
+      </div>
       </div>
     </div>
   </div>
@@ -80,12 +108,26 @@
       <div class="panel-heading"> <h4> Cyclomatic Complexity </h4> </div>
       <div class="panel-body" style="padding: 0">
         <ul class="list-group" style="margin: 0">
-          <li class="list-group-item" ng-repeat="pkg in input.rankings.cyclomatic">
+          <li class="list-group-item" ng-repeat="pkg in input.rankings.cyclomatic.active">
             <span class="pull-right"> {{ pkg.value }} </span>
-            {{ $index + 1 }}.
+            {{ input.rankings.cyclomatic.current * 10 + $index + 1 }}.
             <a style="cursor: pointer" ng-click="input.goToPackage(pkg.name)"> {{ pkg.name }} </a>
           </li>
         </ul>
+      </div>
+      <div class="panel-footer" style="margin: 0; padding: 0">
+        <div class="text-center">
+          <nav>
+            <ul class="pager ranking-pager">
+              <li>
+                <a href="#" ng-click="input.showPreviousRow('cyclomatic')"> Previous </a>
+              </li>
+              <li>
+                <a href="#" ng-click="input.showNextRow('cyclomatic')"> Next </a>
+              </li>
+            </ul>
+          </nav>
+      </div>
       </div>
     </div>
   </div>
