@@ -5,7 +5,7 @@ function isCriticalError (err) {
     return true
   }
 
-  if (err.message.match(/|doesn't exist|analyzed|deleted|EISDIR|40|No files|Too many|big object|timed out/)) {
+  if (err.message.match(/doesn't exist|analyzed|deleted|EISDIR|40|No files|Too many|big object|timed out/)) {
     return false
   }
 

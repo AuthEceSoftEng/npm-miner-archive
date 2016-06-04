@@ -1,0 +1,13 @@
+
+apps:
+  - script: eslint.js
+  - script: jsinspect.js
+  - script: todo.js
+  - script: feeder.js
+  - script: graph-feeder.js
+  - script: graph-metrics.js
+  - script: dispatcher.py
+    interpreter: python3
+  - script: escomplex.js
+    instances: 4
+    exec_mode: cluster
