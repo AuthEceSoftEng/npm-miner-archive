@@ -19,6 +19,19 @@ function toAxisUnits (values, n) {
   return parseInt(percentage * values.length)
 }
 
+/**
+ * Check if a series of eslint errors/warnings is non zero.
+ */
+function hasErrors (series) {
+  for (let i = 0; i < series.data.length; i++) {
+    if (series.data[i] > 0) {
+      return true
+    }
+  }
+
+  return false
+}
+
 function AnalyticsResultsCtrl (escomplexData, eslintData, registryData, jsinspectData, todoData,
                                $log, $filter, AppSettings,
                                ESComplexService, ESLintService, Gremlin, MetricsService) {
@@ -198,9 +211,10 @@ function AnalyticsResultsCtrl (escomplexData, eslintData, registryData, jsinspec
       this.miscMetrics.lintWarnings = results[2].warnings[historySize - 1]
     })
     .then(() => {
-      // At least a file must have some errors/warnings.
-      if (this.eslint.files.length > 0) {
+      // At least a file must have some errors or warnings.
+      if (hasErrors(this.eslint.summary[0]) || hasErrors(this.eslint.summary[1])) {
         this.eslint.isReady = true
+      } else {
         return
       }
 
