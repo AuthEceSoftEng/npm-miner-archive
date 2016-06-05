@@ -107,19 +107,16 @@ function isCacheInvalid (measure, now, lastUpdate) {
 /**
  * Converts values of metrics for a package into percentages based on their value.
  */
-// FIXME A lof of logic is duplicated.
 exports.getPercentages = function (request, reply) {
-  var now = new Date()
-  var name = request.query.name
+  let now = new Date()
+  let deferred = Promise.resolve()
 
   // If it's the first time or the last call was more than N days ago, update cache.
   if (isCacheInvalid(this.complexSeries, now, this.metricsLastUpdate)) {
-    request.log(['cache'], 'Fetching raw series')
+    request.log(['cache update'], 'Fetching raw series from redis...')
+    this.metricsLastUpdate = new Date()
 
-    this.metricsLastUpdate = now
-
-    // Get the raw series for all the metrics
-    Promise.map(METRICS, (metric) => {
+    deferred = Promise.map(METRICS, (metric) => {
       return this.redis.lrangeAsync(metric + 'RawSeries', 0, -1)
     })
     .then((data) => {
@@ -153,63 +150,42 @@ exports.getPercentages = function (request, reply) {
       this.halsteadSeries = halsteadSeries
       this.complexSeries = complexSeries
       this.graphSeries = graphSeries
-
-      // Get the metrics for this package
-      return Promise.all([
-        this.gremlin.execute(`g.V().has('name', '${name}').valueMap(${arrayToStr(TITAN_METRICS)})`),
-        this.gremlin.execute(`g.V().has('name', '${name}').outE().count()`),
-        this.gremlin.execute(`g.V().has('name', '${name}').inE().count()`)
-      ])
     })
-    .then((response) => {
-      var data = response[0][0]
+  }
 
-      // Sanity check: handle corner case when the package doesnt have any properties except the name.
-      // The API should not be called if the package doesn't exist.
-      if (_.isEmpty(data)) {
-        data = getDefaultValues()
-      }
+  deferred.then(() => {
+    let name = request.query.name
 
-      data.outDegree = response[1]
-      if (request.query.withInDegree) {
-        data.inDegree = response[2]
-      }
-
-      // FIXME The following computations should be optimized
-      // Compare the values with the general population.
-      reply({
-        halstead: computePercentages(this.halsteadSeries, data),
-        complexity: computePercentages(this.complexSeries, data),
-        graph: computePercentages(this.graphSeries, data)
-      })
-    })
-    .catch((err) => reply(Boom.wrap(err)))
-  } else {
     return Promise.all([
       this.gremlin.execute(`g.V().has('name', '${name}').valueMap(${arrayToStr(TITAN_METRICS)})`),
       this.gremlin.execute(`g.V().has('name', '${name}').outE().count()`),
       this.gremlin.execute(`g.V().has('name', '${name}').inE().count()`)
     ])
-    .then((response) => {
-      var data = response[0][0]
+  })
+  .then((response) => {
+    let data = response[0][0]
 
-      if (_.isEmpty(data)) {
-        data = getDefaultValues()
-      }
+    // Sanity check: handle corner case when the package doesnt have any properties except the name.
+    // The API should not be called if the package doesn't exist.
+    if (_.isEmpty(data)) {
+      data = getDefaultValues()
+    }
 
-      data.outDegree = response[1]
-      if (request.query.withInDegree) {
-        data.inDegree = response[2]
-      }
+    data.outDegree = response[1]
+    if (request.query.withInDegree) {
+      data.inDegree = response[2]
+    }
 
-      reply({
-        halstead: computePercentages(this.halsteadSeries, data),
-        complexity: computePercentages(this.complexSeries, data),
-        graph: computePercentages(this.graphSeries, data)
-      })
-    })
-    .catch((err) => reply(Boom.wrap(err)))
-  }
+    // FIXME The following computations should be optimized
+    // Compare the values with the general population.
+    return {
+      halstead: computePercentages(this.halsteadSeries, data),
+      complexity: computePercentages(this.complexSeries, data),
+      graph: computePercentages(this.graphSeries, data)
+    }
+  })
+  .then((metrics) => reply(metrics))
+  .catch((err) => reply(Boom.wrap(err)))
 }
 
 exports.getDatabaseInfo = function (request, reply) {
