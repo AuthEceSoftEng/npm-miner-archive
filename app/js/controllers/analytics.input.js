@@ -10,6 +10,12 @@ function AnalyticsInputCtrl ($rootScope, $log, $filter, $state, toastr, Gremlin,
   this.description = 'Search for any npm package...'
   this.query = ''
 
+  this.tooltips = {
+    maintainability: Settings.metrics.maintainability.description,
+    cyclomatic: `The average cyclomatic complexity per function for a package. ${Settings.metrics.cyclomatic.description}`,
+    pageRank: Settings.metrics.pageRank.description
+  }
+
   // Landing page
   this.dbInfo = dbInfo
   this.rankings = {

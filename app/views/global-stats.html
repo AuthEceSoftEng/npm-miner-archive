@@ -46,10 +46,15 @@
 <div class="row">
   <div class="col-xs-12" style="margin-bottom: 20px">
     <h2 class="text-center"> Rankings </h2>
+    <p class="text-center" style="font-size: 16px"> Top 50 packages with the highest values. </p>
   </div>
   <div class="col-md-4">
     <div class="panel panel-default">
-      <div class="panel-heading"> <h4> Maintainability </h4> </div>
+      <div class="panel-heading">
+        <h4 uib-tooltip="{{ input.tooltips.maintainability }}" tooltip-class="info-tooltip">
+          Maintainability
+        </h4>
+      </div>
       <div class="panel-body" style="padding: 0">
         <ul class="list-group" style="margin: 0">
           <li class="list-group-item" ng-repeat="pkg in input.rankings.maintainability.active">
@@ -77,7 +82,11 @@
   </div>
   <div class="col-md-4">
     <div class="panel panel-default">
-      <div class="panel-heading"> <h4> PageRank </h4> </div>
+      <div class="panel-heading">
+        <h4 uib-tooltip="{{ input.tooltips.pageRank }}" tooltip-class="info-tooltip">
+          PageRank
+        </h4>
+      </div>
       <div class="panel-body" style="padding: 0">
         <ul class="list-group" style="margin: 0">
           <li class="list-group-item" ng-repeat="pkg in input.rankings.pageRank.active">
@@ -105,7 +114,11 @@
   </div>
   <div class="col-md-4">
     <div class="panel panel-default">
-      <div class="panel-heading"> <h4> Cyclomatic Complexity </h4> </div>
+      <div class="panel-heading">
+        <h4 uib-tooltip="{{ input.tooltips.cyclomatic }}" tooltip-class="info-tooltip">
+            Cyclomatic Complexity
+        </h4>
+      </div>
       <div class="panel-body" style="padding: 0">
         <ul class="list-group" style="margin: 0">
           <li class="list-group-item" ng-repeat="pkg in input.rankings.cyclomatic.active">
@@ -136,6 +149,7 @@
 <div class="row">
   <div class="col-xs-12" style="margin-bottom: 20px">
     <h2 class="text-center">  Metric Distribution  </h2>
+    <p class="text-center" style="font-size: 16px"> Histograms of some popular metrics, extracted from all the packages. </p>
   </div>
   <div class="col-xs-12">
     <div class="panel panel-default">

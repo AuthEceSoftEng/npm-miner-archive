@@ -79,6 +79,10 @@ var settings = {
     volume: {
       title: 'Volume',
       description: 'The volume measure is defined as #(length) * log(vocabulary)'
+    },
+    pageRank: {
+      title: 'PageRank',
+      description: 'PageRank works by counting the number and quality of dependencies to a package to determine a rough estimate of how important the package is. The underlying assumption is that more important packages are likely to have more packages be depended on them.'
     }
   },
   complexityMetricsLabels: [
