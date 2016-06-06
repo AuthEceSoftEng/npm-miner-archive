@@ -1,0 +1,26 @@
+#!/usr/bin/env node
+
+var info = require('./lib.js').getCredentials()
+var Promise = require('bluebird')
+var post = Promise.promisify(require('request').post)
+
+var registry = `http://${info.host}:5984/registry/_compact`
+var eslint = `http://${info.host}:5984/eslint/_compact`
+var escomplex = `http://${info.host}:5984/escomplex/_compact`
+var jsinspect = `http://${info.host}:5984/jsinspect/_compact`
+
+Promise.all([
+  post({ url: registry, json: true, headers: { 'content-type': 'application/json' }, auth: info.auth }),
+  post({ url: eslint, json: true, headers: { 'content-type': 'application/json' }, auth: info.auth }),
+  post({ url: escomplex, json: true, headers: { 'content-type': 'application/json' }, auth: info.auth }),
+  post({ url: jsinspect, json: true, headers: { 'content-type': 'application/json' }, auth: info.auth })
+])
+.then((response) => {
+  console.log(response[0].body)
+  console.log(response[1].body)
+  console.log(response[2].body)
+  console.log(response[3].body)
+})
+.catch((err) => {
+  throw err
+})

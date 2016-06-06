@@ -8,4 +8,7 @@ push:
 replicate:
 	@./replicate
 
-.PHONY: push replicate
+compact:
+	@./compact
+
+.PHONY: push replicate compact
