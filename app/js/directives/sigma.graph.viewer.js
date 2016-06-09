@@ -9,6 +9,9 @@ var path = require('path')
 var FilterPanelTemplate = fs.readFileSync(path.resolve('app/views/partials/graph.filter.panel.html'))
 var GremlinEditorTemplate = fs.readFileSync(path.resolve('app/views/partials/gremlin.editor.panel.html'))
 var NodeInfoBoxTemplate = fs.readFileSync(path.resolve('app/views/partials/node.tooltip.html'))
+var Promise = require('bluebird')
+
+const MAX_NODES_EXPAND = 250
 
 function sigmaGraphViewer ($log, $rootScope, $compile, Gremlin, toastr) {
   'ngInject'
@@ -110,8 +113,10 @@ function sigmaGraphViewer ($log, $rootScope, $compile, Gremlin, toastr) {
           <li ng-click="openFilterPanel()"> <a> Filter </a> </li>
           <li ng-click="openGremlinEditor()"> <a> Gremlin editor </a> </li>
           <li ng-click="openStatisticsPanel()"> <a> Stats </a> </li>
+          <li ng-click="expandAllNodes()"> <a> Expand all </a> </li>
           <li class="divider"> <a> Communities </a> </li>
           <li ng-click="showGraphLegend()"> <a> Legend </a> </li>
+          <li ng-click="startForceLink()"> <a> ForceAtlas layout </a> </li>
           <li ng-click="resetFilters()"> <a> Reset </a> </li>
         </ul>
         `,
@@ -139,6 +144,37 @@ function sigmaGraphViewer ($log, $rootScope, $compile, Gremlin, toastr) {
         updateGraphSizeInfo()
       })
       .catch((err) => { $log.error(err) })
+    }
+
+    scope.startForceLink = () => {
+      tooltips.close()
+      sigma.layouts.startForceLink()
+    }
+
+    scope.expandAllNodes = () => {
+      tooltips.close()
+
+      if (graph.g.graph.nodes().length > MAX_NODES_EXPAND) {
+        // TODO Open up a confirmation dialog, in case the user wants to continue.
+        // FIXME Improve gremlin scripts to speed up the process
+        toastr.warning('Aborting resource intensive task.')
+        return
+      }
+
+      let work = []
+      graph.g.graph.nodes().forEach((node) => {
+        work.push(Gremlin.getDepsById(node.id))
+      })
+
+      Promise.each(work, (subgraph) => {
+        graph.addSubgraph({ nodes: subgraph[0], edges: subgraph[1] })
+        updateGraphSizeInfo()
+      })
+      .then(() => {
+        graph.refresh()
+        sigma.layouts.startForceLink()
+      })
+      .catch((err) => $log.error(err))
     }
 
     function updateGraphSizeInfo () {
