@@ -4,7 +4,7 @@ const controllersModule = require('./_index')
 const _ = require('lodash')
 const Settings = require('../constants')
 
-function AnalyticsInputCtrl ($rootScope, $log, $filter, $state, toastr, Gremlin, dbInfo, rankings, distribution) {
+function AnalyticsInputCtrl ($rootScope, $log, $filter, $state, toastr, Gremlin, dbInfo, rankings, distribution, MetricsService) {
   'ngInject'
 
   this.description = 'Search for any npm package...'
@@ -82,6 +82,11 @@ function AnalyticsInputCtrl ($rootScope, $log, $filter, $state, toastr, Gremlin,
     var index = this.rankings[metric].current
 
     this.rankings[metric].active = this.rankings[metric].data.slice(index * 10, index * 10 + 10)
+  }
+
+  this.refreshDatabaseInfo = () => {
+    MetricsService.getDatabaseInfo()
+    .then((info) => { this.dbInfo = info })
   }
 
   this.search = (query) => {

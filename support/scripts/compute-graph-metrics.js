@@ -2,7 +2,7 @@
 
 'use strict'
 
-const Config = require('../config')
+const Config = require('../../server/config')
 const Gremlin = require('gremlin')
 const Promise = require('bluebird')
 const client = Gremlin.createClient(Config.gremlinServer.port, Config.gremlinServer.host)
