@@ -218,6 +218,62 @@ class Graph {
     ).apply()
   }
 
+  filterByMaintainability (value) {
+    this.filters
+    .undo('byMaintainability')
+    .nodesBy(
+      function (n, params) {
+        if (n.properties && n.properties.maintainability) {
+          return n.properties.maintainability[0].value >= params.value
+        }
+        return false
+      }, { value },
+      'byMaintainability'
+    ).apply()
+  }
+
+  filterByCyclomatic (value) {
+    this.filters
+    .undo('byCyclomatic')
+    .nodesBy(
+      function (n, params) {
+        if (n.properties && n.properties.cyclomatic) {
+          return n.properties.cyclomatic[0].value >= params.value
+        }
+        return false
+      }, { value },
+      'byCyclomatic'
+    ).apply()
+  }
+
+  filterByLOC (value) {
+    this.filters
+    .undo('byLOC')
+    .nodesBy(
+      function (n, params) {
+        if (n.properties && n.properties.totalSLOC) {
+          return n.properties.totalSLOC[0].value >= params.value
+        }
+        return false
+      }, { value },
+      'byLOC'
+    ).apply()
+  }
+
+  filterByReleaseRate (value) {
+    this.filters
+    .undo('byReleaseRate')
+    .nodesBy(
+      function (n, params) {
+        if (n.properties && n.properties.releaseRate) {
+          return n.properties.releaseRate[0].value >= params.value
+        }
+        return false
+      }, { value },
+      'byReleaseRate'
+    ).apply()
+  }
+
   searchByName (query) {
     this.filters
     .undo('byName')

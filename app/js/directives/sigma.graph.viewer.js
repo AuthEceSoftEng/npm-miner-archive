@@ -45,6 +45,10 @@ function sigmaGraphViewer ($log, $rootScope, $compile, Gremlin, toastr) {
     scope.isGremlinEditorActive = false
     scope.filters.nodes.inDegree = 0
     scope.filters.nodes.outDegree = 0
+    scope.filters.nodes.maintainability = 0
+    scope.filters.nodes.cyclomatic = 0
+    scope.filters.nodes.loc = 0
+    scope.filters.nodes.releaseRate = 0
     scope.filters.tags = []
     scope.filters.availableDependencies = [
       'All', 'Production', 'Development'
@@ -280,6 +284,22 @@ function sigmaGraphViewer ($log, $rootScope, $compile, Gremlin, toastr) {
 
     scope.$watch('filters.nodes.inDegree', (newVal, oldVal) => {
       graph.filterByInDegree(newVal)
+    })
+
+    scope.$watch('filters.nodes.maintainability', (newVal, oldVal) => {
+      graph.filterByMaintainability(newVal)
+    })
+
+    scope.$watch('filters.nodes.cyclomatic', (newVal, oldVal) => {
+      graph.filterByCyclomatic(newVal)
+    })
+
+    scope.$watch('filters.nodes.loc', (newVal, oldVal) => {
+      graph.filterByLOC(newVal)
+    })
+
+    scope.$watch('filters.nodes.releaseRate', (newVal, oldVal) => {
+      graph.filterByReleaseRate(newVal)
     })
 
     scope.$watch('filters.nodes.query', (newVal, oldVal) => { graph.searchByName(newVal) })

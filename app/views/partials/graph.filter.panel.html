@@ -18,6 +18,14 @@
             <input type="range" class="form-control" min="0" max="20" ng-model="filters.nodes.outDegree"> </input>
             <span class="filter-type"> Dependents {{ filters.nodes.inDegree }} </span>
             <input type="range" class="form-control" min="0" max="20" ng-model="filters.nodes.inDegree"> </input>
+            <span class="filter-type"> Maintainability {{ filters.nodes.maintainability }} </span>
+            <input type="range" class="form-control" min="0" max="100" ng-model="filters.nodes.maintainability"> </input>
+            <span class="filter-type"> Cyclomatic complexity {{ filters.nodes.cyclomatic }} </span>
+            <input type="range" class="form-control" min="0" max="10" ng-model="filters.nodes.cyclomatic"> </input>
+            <span class="filter-type"> Lines of code {{ filters.nodes.loc }} </span>
+            <input type="range" class="form-control" min="0" max="1000" ng-model="filters.nodes.loc"> </input>
+            <span class="filter-type"> Release rate {{ filters.nodes.releaseRate }} </span>
+            <input type="range" class="form-control" min="0" max="100" ng-model="filters.nodes.releaseRate"> </input>
             <span class="filter-type"> By keywords </span>
             <tags-input ng-model="filters.tags" on-tag-added="updateKeywordSearch()" on-tag-removed="updateKeywordSearch()"></tags-input>
           </div>
