@@ -112,10 +112,8 @@ function sigmaGraphViewer ($log, $rootScope, $compile, Gremlin, toastr) {
           <li ng-click="clearGraph()"> <a> Clear </a> </li>
           <li ng-click="openFilterPanel()"> <a> Filter </a> </li>
           <li ng-click="openGremlinEditor()"> <a> Gremlin editor </a> </li>
-          <li ng-click="openStatisticsPanel()"> <a> Stats </a> </li>
           <li ng-click="expandAllNodes()"> <a> Expand all </a> </li>
           <li class="divider"> <a> Communities </a> </li>
-          <li ng-click="showGraphLegend()"> <a> Legend </a> </li>
           <li ng-click="startForceLink()"> <a> ForceAtlas layout </a> </li>
           <li ng-click="resetFilters()"> <a> Reset </a> </li>
         </ul>
@@ -195,6 +193,51 @@ function sigmaGraphViewer ($log, $rootScope, $compile, Gremlin, toastr) {
       scope.nodeInfoBox.metrics.inDegree = graph.g.graph.degree(node.id, 'in')
       scope.nodeInfoBox.metrics.outDegree = graph.g.graph.degree(node.id, 'out')
       scope.nodeInfoBox.link = 'https://www.npmjs.com/package/' + node.label
+
+      // HACK quick fix
+      if (node.properties && node.properties.maintainability) {
+        scope.nodeInfoBox.maintainability = node.properties.maintainability[0].value.toFixed(2)
+      }
+
+      if (node.properties && node.properties.numberOfFunctions) {
+        scope.nodeInfoBox.numberOfFunctions = node.properties.numberOfFunctions[0].value
+      }
+
+      if (node.properties && node.properties.numberOfFiles) {
+        scope.nodeInfoBox.numberOfFiles = node.properties.numberOfFiles[0].value
+      }
+
+      if (node.properties && node.properties.params) {
+        scope.nodeInfoBox.params = node.properties.params[0].value.toFixed(2)
+      }
+
+      if (node.properties && node.properties.volume) {
+        scope.nodeInfoBox.volume = node.properties.volume[0].value.toFixed(2)
+      }
+
+      if (node.properties && node.properties.totalSLOC) {
+        scope.nodeInfoBox.totalSLOC = node.properties.totalSLOC[0].value
+      }
+
+      if (node.properties && node.properties.cyclomatic) {
+        scope.nodeInfoBox.cyclomatic = node.properties.cyclomatic[0].value.toFixed(2)
+      }
+
+      if (node.properties && node.properties.firstOrderDensity) {
+        scope.nodeInfoBox.firstOrderDensity = node.properties.firstOrderDensity[0].value.toFixed(2)
+      }
+
+      if (node.properties && node.properties.releaseRate) {
+        scope.nodeInfoBox.releaseRate = node.properties.releaseRate[0].value
+      }
+
+      if (node.properties && node.properties.errorCount) {
+        scope.nodeInfoBox.errorCount = node.properties.errorCount[0].value
+      }
+
+      if (node.properties && node.properties.warningCount) {
+        scope.nodeInfoBox.warningCount = node.properties.warningCount[0].value
+      }
 
       scope.nodeInfoBox.isActive = true
       scope.$apply()

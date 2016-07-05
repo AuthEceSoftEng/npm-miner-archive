@@ -28,6 +28,78 @@
             {{ nodeInfoBox.version}}
           </div>
         </div>
+        <div class="info-section" ng-show="nodeInfoBox.maintainability">
+          <div class="col-md-12 node-tooltip-item-header">
+            <h6 class="node-tooltip-info"> Maintainability </h6>
+          </div>
+          <div class="col-md-12 node-tooltip-item-content">
+            {{ nodeInfoBox.maintainability}}
+          </div>
+        </div>
+        <div class="info-section" ng-show="nodeInfoBox.cyclomatic">
+          <div class="col-md-12 node-tooltip-item-header">
+            <h6 class="node-tooltip-info"> Cyclomatic complexity </h6>
+          </div>
+          <div class="col-md-12 node-tooltip-item-content">
+            {{ nodeInfoBox.cyclomatic}}
+          </div>
+        </div>
+        <div class="info-section" ng-show="nodeInfoBox.params">
+          <div class="col-md-12 node-tooltip-item-header">
+            <h6 class="node-tooltip-info"> Number of Parameters </h6>
+          </div>
+          <div class="col-md-12 node-tooltip-item-content">
+            {{ nodeInfoBox.params}}
+          </div>
+        </div>
+        <div class="info-section" ng-show="nodeInfoBox.totalSLOC">
+          <div class="col-md-12 node-tooltip-item-header">
+            <h6 class="node-tooltip-info"> Total lines of code </h6>
+          </div>
+          <div class="col-md-12 node-tooltip-item-content">
+            {{ nodeInfoBox.totalSLOC}}
+          </div>
+        </div>
+        <div class="info-section" ng-show="nodeInfoBox.releaseRate">
+          <div class="col-md-12 node-tooltip-item-header">
+            <h6 class="node-tooltip-info"> Release Rate </h6>
+          </div>
+          <div class="col-md-12 node-tooltip-item-content">
+            {{ nodeInfoBox.releaseRate}}
+          </div>
+        </div>
+        <div class="info-section" ng-show="nodeInfoBox.warningCount">
+          <div class="col-md-12 node-tooltip-item-header">
+            <h6 class="node-tooltip-info"> ESlint warnings </h6>
+          </div>
+          <div class="col-md-12 node-tooltip-item-content">
+            {{ nodeInfoBox.warningCount}}
+          </div>
+        </div>
+        <div class="info-section" ng-show="nodeInfoBox.errorCount">
+          <div class="col-md-12 node-tooltip-item-header">
+            <h6 class="node-tooltip-info"> ESlint errors </h6>
+          </div>
+          <div class="col-md-12 node-tooltip-item-content">
+            {{ nodeInfoBox.errorCount}}
+          </div>
+        </div>
+        <div class="info-section" ng-show="nodeInfoBox.volume">
+          <div class="col-md-12 node-tooltip-item-header">
+            <h6 class="node-tooltip-info"> Volume </h6>
+          </div>
+          <div class="col-md-12 node-tooltip-item-content">
+            {{ nodeInfoBox.volume}}
+          </div>
+        </div>
+        <div class="info-section" ng-show="nodeInfoBox.numberOfFunctions">
+          <div class="col-md-12 node-tooltip-item-header">
+            <h6 class="node-tooltip-info"> Number of Functions </h6>
+          </div>
+          <div class="col-md-12 node-tooltip-item-content">
+            {{ nodeInfoBox.numberOfFunctions}}
+          </div>
+        </div>
         <div class="info-section" ng-show="nodeInfoBox.metrics.inDegree">
           <div class="col-md-12 node-tooltip-item-header">
             <h6 class="node-tooltip-info"> In degree </h6>
