@@ -27,21 +27,15 @@ api.getPackage = (link, directory) => {
   }
 
   return new Promise((resolve, reject) => {
-    new Download(options)
-      .get(link)
-      .dest(directory)
-      .run((err) => {
-        if (err) {
-          reject(err)
-          return
-        }
+    let paths = []
 
+    Download(link, directory, options)
+      .then((data) => {
         log.debug(`Downloaded at ${directory}`)
 
-        var paths = []
-
         // exclude irrelevant files
-        glob([
+        // TODO simplify the rules
+        return glob([
           `${directory}/**/*.js`,
           '!**/*test*/**/*.js',
           '!**/*node_modules*/**/*.js',
@@ -60,27 +54,27 @@ api.getPackage = (link, directory) => {
           '!**/*build.js',
           '!**/**/*test.js'
         ])
-        .then((files) => {
-          log.debug({files: files})
-          paths = files
+      })
+      .then((files) => {
+        log.debug({files: files})
+        paths = files
 
-          return Promise.map(paths, api.read)
-        })
-        .then((res) => {
-          let data = []
-          for (let i = 0; i < paths.length; i++) {
-            data.push({
-              content: res[i],
-              path: paths[i]
-            })
-          }
+        return Promise.map(paths, api.read)
+      })
+      .then((res) => {
+        let data = []
+        for (let i = 0; i < paths.length; i++) {
+          data.push({
+            content: res[i],
+            path: paths[i]
+          })
+        }
 
-          resolve(data)
-        })
-        .catch((err) => {
-          log.error(err)
-          reject(err)
-        })
+        resolve(data)
+      })
+      .catch((err) => {
+        log.error(err)
+        reject(err)
       })
   })
 }
