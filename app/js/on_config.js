@@ -203,7 +203,7 @@ function OnConfig ($stateProvider, $locationProvider, $urlRouterProvider, uiSele
       views: {
         'graphs': {
           controller: 'GraphsCtrl as graphs',
-          templateUrl: 'graphs.html'
+          template: '<div ui-view></div>'
         }
       }
     })
@@ -212,12 +212,6 @@ function OnConfig ($stateProvider, $locationProvider, $urlRouterProvider, uiSele
     .state('main.graphs.viewer', {
       url: 'viewer/',
       templateUrl: 'graph-viewer.html'
-    })
-
-  $stateProvider
-    .state('main.graphs.editor', {
-      url: 'query/',
-      templateUrl: 'query-editor.html'
     })
 
   // TODO the about state is incomplete, needs content.

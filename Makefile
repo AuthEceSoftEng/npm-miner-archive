@@ -45,8 +45,7 @@ EXTERNAL_CSS = node_modules/bootstrap/dist/css/bootstrap.min.css \
 			   node_modules/codemirror/lib/codemirror.css \
 			   node_modules/codemirror/addon/lint/lint.css \
 			   node_modules/highlight.js/styles/github.css \
-			   node_modules/ng-tags-input/build/ng-tags-input.min.css \
-			   node_modules/ng-material-floating-button/mfb/dist/mfb.min.css
+			   node_modules/ng-tags-input/build/ng-tags-input.min.css
 
 # Fonts
 EXTERNAL_FONTS = node_modules/font-awesome/fonts/*.{eot,ttf,woff,woff2,svg} \

@@ -17,7 +17,6 @@ require('angular-toastr')
 require('angular-ui-bootstrap')
 require('angular-ui-router')
 require('angular-dynamic-locale')
-require('ng-material-floating-button/src/mfb-directive.js')
 require('ng-tags-input')
 require('ui-router-extras')
 require('ui-select')
@@ -31,7 +30,6 @@ const requires = [
   'app.services',
   'ct.ui.router.extras',
   'tmh.dynamicLocale',
-  'ng-mfb',
   'ngAnimate',
   'ngSanitize',
   'ngTagsInput',
