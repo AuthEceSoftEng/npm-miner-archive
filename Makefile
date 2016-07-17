@@ -1,5 +1,7 @@
 SHELL = /bin/bash -O globstar
 
+FAB = fab -f ./deploy/fabfile.py
+
 # Lint configuration
 LINTER = node_modules/standard/bin/cmd.js
 
@@ -140,5 +142,9 @@ clean:
 
 purge: clean
 	@rm -rf node_modules
+
+# Deployment
+deploy-app:
+	$(FAB) web_server deploy_web_app
 
 .PHONY: server
