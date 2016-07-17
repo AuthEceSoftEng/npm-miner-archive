@@ -310,10 +310,12 @@ function sigmaGraphViewer ($log, $rootScope, $compile, Gremlin, toastr) {
     scope.updateDepsTypeFilter = () => { graph.filterByDepType(scope.filters.edges.dependencyType) }
 
     scope.clearGraph = () => {
+      tooltips.close()
       graph.clear()
       updateGraphSizeInfo()
     }
     scope.resetFilters = () => {
+      tooltips.close()
       scope.filters.tags = []
       graph.resetFilters()
     }
