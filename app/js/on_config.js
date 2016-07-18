@@ -3,10 +3,12 @@
 var Settings = require('./constants')
 var angular = require('angular')
 
-function OnConfig ($stateProvider, $locationProvider, $urlRouterProvider, uiSelectConfig, $logProvider, toastrConfig) {
+function OnConfig ($stateProvider, $locationProvider, $urlRouterProvider, uiSelectConfig, $logProvider, toastrConfig, $compileProvider) {
   'ngInject'
 
   uiSelectConfig.theme = 'bootstrap'
+
+  $compileProvider.debugInfoEnabled(false)
 
   angular.extend(toastrConfig, {
     autoDismiss: true,
