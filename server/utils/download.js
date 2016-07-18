@@ -19,6 +19,28 @@ const api = {}
 
 api.readFile = Promise.promisify(fs.readFile)
 
+api.filterFiles = (directory) => {
+  return glob([
+    `${directory}/**/*.js`,
+    `!${directory}/test*/**/*`,
+    `!${directory}/node_modules*/**/*`,
+    `!${directory}/bower_components*/**/*`,
+    `!${directory}/**/example*/**/*`,
+    `!${directory}/**/*min.js`,
+    `!${directory}/**/config.js`,
+    `!${directory}/**/[Gg]ulp[Ff]ile.*`,
+    `!${directory}/**/[Gg]runt[Ff]ile.*`,
+    `!${directory}/**/*spec.js`,
+    `!${directory}/**/*spec*/*`,
+    `!${directory}/dist/**/*`,
+    `!${directory}/build/**/*`,
+    `!${directory}/**/*benchmark*/**/*`,
+    `!${directory}/**/*build.js`,
+    `!${directory}/**/*test.js`,
+    `!${directory}/**/*webpack*`
+  ])
+}
+
 api.getPackage = (link, directory) => {
   const options = {
     mode: '755',
@@ -30,31 +52,7 @@ api.getPackage = (link, directory) => {
     let paths = []
 
     Download(link, directory, options)
-      .then((data) => {
-        log.debug(`Downloaded at ${directory}`)
-
-        // exclude irrelevant files
-        // TODO simplify the rules
-        return glob([
-          `${directory}/**/*.js`,
-          '!**/*test*/**/*.js',
-          '!**/*node_modules*/**/*.js',
-          '!**/*bower_components*/**/*.js',
-          '!**/*example*/**/*.js',
-          '!**/*min.js',
-          '!**/*spec/*',
-          '!dist/**/*',
-          '!**/dist/**/*',
-          '!**/gulpfile.js',
-          '!**/Gruntfile.js',
-          '!**/gruntfile.js',
-          '!**/config.js',
-          '!**/build/*',
-          '!**/*benchmark*/**/*.js',
-          '!**/*build.js',
-          '!**/**/*test.js'
-        ])
-      })
+      .then((data) => api.filterFiles(directory))
       .then((files) => {
         log.debug({files: files})
         paths = files
