@@ -9,6 +9,10 @@ function isCriticalError (err) {
     return false
   }
 
+  if (err.host === 'registry.npmjs.org' && err.statusCode === 500) {
+    return false
+  }
+
   return true
 }
 
