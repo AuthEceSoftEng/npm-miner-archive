@@ -10,11 +10,11 @@ const log = Bunyan.createLogger({
     stream: process.stdout
   }]
 })
-const Config = require('../config')
+const Config = require('../../server/config')
 const Gremlin = require('gremlin')
 const Promise = require('bluebird')
 const AMQP = require('amqplib')
-const Registry = require('../utils/couchdb/registry')
+const Registry = require('../../server/utils/couchdb/registry')
 
 var workQueueChannel
 const GRAPH_QUEUE = 'graph'
