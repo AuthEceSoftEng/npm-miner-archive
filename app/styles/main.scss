@@ -1,7 +1,6 @@
 
 // Fonts
-@import url(https://fonts.googleapis.com/css?family=Roboto:400,300,500,700);
-@import url(https://fonts.googleapis.com/css?family=Montserrat:400,300,500,700);
+@import url(https://fonts.googleapis.com/css?family=Opens+Sans:400,700);
 
 // Partials
 @import 'escomplex-panel';
@@ -11,31 +10,15 @@
 @import 'results-common';
 @import 'charts';
 @import 'graphs/main';
+@import 'wiki';
 
 body {
-  font-family: 'Montserrat', sans-serif;
-}
-
-// Unset the width by font-awesome
-.mfb-component__child-icon,
-.mfb-component__icon,
-.mfb-component__main-icon,
-.mfb-component__main-icon--resting,
-.mfb-component__main-icon--active {
-    width: 100% !important;
-}
-
-.mfb-component__button--child,
-.mfb-component__button--main {
-    color: white;
-
-    &:hover {
-        color: white;
-    }
+  font-family: 'Open Sans', sans-serif;
 }
 
 #toast-container {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 700;
     font-size: 0.9em;
 }
 
