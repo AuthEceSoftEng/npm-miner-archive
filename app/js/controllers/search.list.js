@@ -39,6 +39,8 @@ function ListCtrl ($stateParams, $state, RegistryDatabase, toastr) {
       this.finalMatches = _.reverse(_.sortBy(this.finalMatches, metric, 'pageRank'))
     } else if (metric === 'pageRank') {
       this.finalMatches = _.reverse(_.sortBy(this.finalMatches, 'pageRank'))
+    } else if (metric === 'Name') {
+      this.finalMatches = _.sortBy(this.finalMatches, 'name')
     }
 
     this.resetPagination()
@@ -86,7 +88,8 @@ function ListCtrl ($stateParams, $state, RegistryDatabase, toastr) {
     'maintainability',
     'cyclomatic',
     'releaseRate',
-    'latest'
+    'latest',
+    'Name'
   ]
 
   this.filters = [
