@@ -60,8 +60,8 @@ function OnConfig ($stateProvider, $locationProvider, $urlRouterProvider, uiSele
             rankings: function (MetricsService) {
               return MetricsService.getRankings()
             },
-            distribution: function (Gremlin) {
-              return Gremlin.getHistogram('maintainability')
+            distribution: function (GraphService) {
+              return GraphService.getHistogram('maintainability')
             }
           }
         }

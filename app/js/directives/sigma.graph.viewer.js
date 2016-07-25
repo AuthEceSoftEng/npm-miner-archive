@@ -13,7 +13,7 @@ var Promise = require('bluebird')
 
 const MAX_NODES_EXPAND = 250
 
-function sigmaGraphViewer ($log, $rootScope, $compile, Gremlin, toastr) {
+function sigmaGraphViewer ($log, $rootScope, $compile, GraphService, toastr) {
   'ngInject'
 
   function link (scope, element, attrs) {
@@ -138,7 +138,7 @@ function sigmaGraphViewer ($log, $rootScope, $compile, Gremlin, toastr) {
 
     scope.expandNode = () => {
       tooltips.close()
-      Gremlin.getDepsById(scope.nodeClicked)
+      GraphService.getDepsById(scope.nodeClicked)
       .then((subgraph) => {
         graph.addSubgraph({ nodes: subgraph[0], edges: subgraph[1] })
         sigma.layouts.startForceLink()
@@ -165,7 +165,7 @@ function sigmaGraphViewer ($log, $rootScope, $compile, Gremlin, toastr) {
 
       let work = []
       graph.g.graph.nodes().forEach((node) => {
-        work.push(Gremlin.getDepsById(node.id))
+        work.push(GraphService.getDepsById(node.id))
       })
 
       Promise.each(work, (subgraph) => {
@@ -332,7 +332,7 @@ function sigmaGraphViewer ($log, $rootScope, $compile, Gremlin, toastr) {
     scope.closeGremlinEditor = () => { scope.isGremlinEditorActive = false }
 
     scope.runGremlinScript = () => {
-      Gremlin.execute(scope.gremlin.script)
+      GraphService.execute(scope.gremlin.script)
       .then(handleGremlinResponse)
       .catch((err) => {
         $log.error(err)
@@ -394,7 +394,7 @@ function sigmaGraphViewer ($log, $rootScope, $compile, Gremlin, toastr) {
     }
 
     function fillEmptyNodes () {
-      Gremlin.fetchNodes(graph.getEmptyNodes())
+      GraphService.fetchNodes(graph.getEmptyNodes())
       .then((nodes) => { graph.addSubgraph({ nodes, edges: [] }) })
       .catch((err) => { $log.error(err) })
     }

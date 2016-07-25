@@ -53,7 +53,3 @@ exports.getFileSummary = function (request, reply) {
       reply(Boom.wrap(err))
     })
 }
-
-exports.analyze = function (request, reply) {
-  reply('Not implemented yet...')
-}

@@ -4,7 +4,7 @@ const controllersModule = require('./_index')
 const _ = require('lodash')
 const Settings = require('../constants')
 
-function AnalyticsInputCtrl ($rootScope, $log, $filter, $state, toastr, Gremlin, dbInfo, rankings, distribution, MetricsService) {
+function AnalyticsInputCtrl ($rootScope, $log, $filter, $state, toastr, GraphService, dbInfo, rankings, distribution, MetricsService) {
   'ngInject'
 
   this.description = 'Search for any npm package...'
@@ -57,7 +57,7 @@ function AnalyticsInputCtrl ($rootScope, $log, $filter, $state, toastr, Gremlin,
   this.goToPackage = (name) => { $state.go('main.search.package', { query: name }) }
 
   this.onHistogramSelectMetric = function (metric) {
-    Gremlin.getHistogram(metric)
+    GraphService.getHistogram(metric)
     .then(data => this.setUpPlot(metric, data))
     .catch(err => $log.error(err))
   }
@@ -94,7 +94,7 @@ function AnalyticsInputCtrl ($rootScope, $log, $filter, $state, toastr, Gremlin,
       return
     }
 
-    Gremlin.searchText(query)
+    GraphService.searchText(query)
     .then((results) => {
       if (_.isEmpty(results)) {
         toastr.info(`No results found for ${query}`)

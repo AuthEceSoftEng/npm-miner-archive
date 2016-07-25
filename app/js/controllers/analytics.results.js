@@ -34,7 +34,7 @@ function hasErrors (series) {
 
 function AnalyticsResultsCtrl (escomplexData, eslintData, registryData, jsinspectData, todoData,
                                $log, $filter, AppSettings,
-                               ESComplexService, ESLintService, Gremlin, MetricsService) {
+                               ESComplexService, ESLintService, GraphService, MetricsService) {
   'ngInject'
 
   this.complexityMetricsPercentages = []
@@ -99,7 +99,7 @@ function AnalyticsResultsCtrl (escomplexData, eslintData, registryData, jsinspec
    * OVERVIEW PANEL
    */
 
-  Gremlin.getOverviewInfo(this.name)
+  GraphService.getOverviewInfo(this.name)
   .then((info) => {
     this.overview = {
       totalLOC: '-',
@@ -265,7 +265,7 @@ function AnalyticsResultsCtrl (escomplexData, eslintData, registryData, jsinspec
    * Changes the histogram plot for the complexity metrics.
    */
   this.onHistogramSelectMetric = () => {
-    Gremlin.getHistogram(this.histogram.metric.name)
+    GraphService.getHistogram(this.histogram.metric.name)
     .then((data) => {
       var packageValue
 
@@ -310,7 +310,7 @@ function AnalyticsResultsCtrl (escomplexData, eslintData, registryData, jsinspec
       return
     }
 
-    Gremlin.getGraphMetricsOverview(this.name)
+    GraphService.getGraphMetricsOverview(this.name)
     .then((metrics) => {
       this.graphs = { metricsSummary: metrics }
 

@@ -3,7 +3,7 @@
 const controllersModule = require('./_index')
 const SIGMA_NAMESPACE = 'mainSigmaGraph'
 
-function GraphsCtrl ($log, $state, $rootScope, Gremlin, GraphService) {
+function GraphsCtrl ($log, $state, $rootScope, GraphService) {
   'ngInject'
 
   $log.debug('graph ctrl init')
