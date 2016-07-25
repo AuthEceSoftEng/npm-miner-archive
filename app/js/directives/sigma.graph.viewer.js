@@ -7,7 +7,6 @@ var fs = require('fs')
 var directivesModule = require('./_index.js')
 var path = require('path')
 var FilterPanelTemplate = fs.readFileSync(path.resolve('app/views/partials/graph.filter.panel.html'))
-var GremlinEditorTemplate = fs.readFileSync(path.resolve('app/views/partials/gremlin.editor.panel.html'))
 var NodeInfoBoxTemplate = fs.readFileSync(path.resolve('app/views/partials/node.tooltip.html'))
 var Promise = require('bluebird')
 
@@ -115,7 +114,6 @@ function sigmaGraphViewer ($log, $rootScope, $compile, GraphService, toastr) {
         <ul class="sigma-dropdown-menu" role="menu">
           <li ng-click="clearGraph()"> <a> Clear </a> </li>
           <li ng-click="openFilterPanel()"> <a> Filter </a> </li>
-          <li ng-click="openGremlinEditor()"> <a> Gremlin editor </a> </li>
           <li ng-click="expandAllNodes()"> <a> Expand all </a> </li>
           <li class="divider"> <a> Communities </a> </li>
           <li ng-click="startForceLink()"> <a> ForceAtlas layout </a> </li>
@@ -319,87 +317,6 @@ function sigmaGraphViewer ($log, $rootScope, $compile, GraphService, toastr) {
       scope.filters.tags = []
       graph.resetFilters()
     }
-
-    /**
-     * Gremlin editor API
-     */
-
-    // Toggle editor panel
-    scope.openGremlinEditor = () => {
-      tooltips.close()
-      scope.isGremlinEditorActive = true
-    }
-    scope.closeGremlinEditor = () => { scope.isGremlinEditorActive = false }
-
-    scope.runGremlinScript = () => {
-      GraphService.execute(scope.gremlin.script)
-      .then(handleGremlinResponse)
-      .catch((err) => {
-        $log.error(err)
-        toastr.error(err.message)
-      })
-    }
-    scope.clearGremlinScript = () => { scope.gremlin.options.value = '' }
-
-    /**
-     * Checks the type of the response and informs the user accordingly.
-     */
-    function handleGremlinResponse (response) {
-      if (Array.isArray(response[0]) && Array.isArray(response[1])) {
-        // FIXME Error handling should be improved
-        if (response[0].length === 0 || response[1].length === 0) return
-        if (response[0][0].type !== response[1][0]) {
-          graph.addSubgraph({ nodes: response[0], edges: response[1] })
-          sigma.layouts.startForceLink()
-          graph.refresh()
-          updateGraphSizeInfo()
-          return
-        } else {
-          $log.error('Unsupported response types', response[0][0].type, response[1][0].type)
-        }
-      }
-
-      if (isVertex(response[0])) {
-        console.log('Received graph nodes', response)
-        graph.addSubgraph({ nodes: response, edges: [] })
-        sigma.layouts.startForceLink()
-        graph.refresh()
-        updateGraphSizeInfo()
-      } else if (isEdge(response[0])) {
-        console.log('Received graph edges', response)
-        graph.addSubgraph({ nodes: [], edges: response })
-        sigma.layouts.startForceLink()
-        graph.refresh()
-        updateGraphSizeInfo()
-        fillEmptyNodes()
-      } else {
-        if (response.length === 1) {
-          toastr.info(`Response: ${response[0]}`)
-        } else if (response.length < 40) {
-          // can be shown
-          console.log('Show with another panel', response)
-        } else {
-          // too big for the screen
-          console.log('Response size is too big', response.length)
-        }
-      }
-    }
-
-    function isVertex (item) {
-      return item.type === 'vertex'
-    }
-
-    function isEdge (item) {
-      return item.type === 'edge'
-    }
-
-    function fillEmptyNodes () {
-      GraphService.fetchNodes(graph.getEmptyNodes())
-      .then((nodes) => { graph.addSubgraph({ nodes, edges: [] }) })
-      .catch((err) => { $log.error(err) })
-    }
-
-    // TODO should clean up the listeres within $destroy
   }
 
   return {
@@ -414,7 +331,7 @@ function sigmaGraphViewer ($log, $rootScope, $compile, GraphService, toastr) {
                  </div>
                </div>
                ${NodeInfoBoxTemplate}
-               ${FilterPanelTemplate} ${GremlinEditorTemplate}`,
+               ${FilterPanelTemplate}`,
     scope: {
       namespace: '='
     },
