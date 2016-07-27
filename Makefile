@@ -61,6 +61,7 @@ EXTERNAL_JS = node_modules/codemirror/mode/javascript/javascript.js \
 			  node_modules/codemirror/mode/groovy/groovy.js
 
 SCRIPTS := $(shell find app server -type f -name '*.js')
+IMAGES := app/images/*
 
 GLOBAL_DEPS = mocha \
 			  nodemon \
@@ -132,6 +133,7 @@ global:
 copy:
 	@mkdir -p $(OUTPUT_DIR)/{js,css,fonts,images}
 	@cp $(EXTERNAL_CSS) $(CSS_DEST_DIR)
+	@cp $(IMAGES) $(IMG_DEST_DIR)
 	@cp $(EXTERNAL_FONTS) $(FONT_DEST_DIR)
 	@cp $(EXTERNAL_JS) $(JS_DEST_DIR)
 	@cp $(INDEX_HTML) $(OUTPUT_DIR)
