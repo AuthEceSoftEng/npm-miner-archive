@@ -3,24 +3,24 @@ SHELL = /bin/bash -O globstar
 FAB = fab -f ./deploy/fabfile.py
 
 # Lint configuration
-LINTER = node_modules/standard/bin/cmd.js
+LINTER = ./node_modules/.bin/standard
 
 # Test runners
-KARMA = ./node_modules/karma/bin/karma
-PROTRACTOR = ./node_modules/protractor/bin/protractor
-WEBDRIVER = ./node_modules/protractor/bin/webdriver-manager
+KARMA = ./node_modules/.bin/karma
+PROTRACTOR = ./node_modules/.bin/protractor
+WEBDRIVER = ./node_modules/.bin/webdriver-manager
 
 # File watcher
-WATCHER = ./node_modules/watchify/bin/cmd.js
+WATCHER = ./node_modules/.bin/watchify
 
 # JS minifier
-UGLIFY = node_modules/uglify-js/bin/uglifyjs
+UGLIFY = ./node_modules/.bin/uglifyjs
 UGLIFY_FLAGS = --compress \
 			   --screw-ie8 \
 			   -o $(JS_DEST_DIR)/main.js
 
 # Browserify configuration
-BROWSERIFY = node_modules/browserify/bin/cmd.js
+BROWSERIFY = ./node_modules/.bin/browserify
 BROWSWER_MAIN = app/js/main.js
 BROWSERIFY_FLAGS = -o $(JS_DEST_DIR)/main.js \
 				   -t babelify \
@@ -29,7 +29,7 @@ BROWSERIFY_FLAGS = -o $(JS_DEST_DIR)/main.js \
 				   -t bulkify
 
 # Sass configuration
-SASS = node_modules/node-sass/bin/node-sass
+SASS = ./node_modules/.bin/node-sass
 SASS_MAIN = app/styles/main.scss
 SASS_FLAGS = --output $(CSS_DEST_DIR) \
 			 --source-map $(CSS_DEST_DIR) \
@@ -63,12 +63,10 @@ EXTERNAL_JS = node_modules/codemirror/mode/javascript/javascript.js \
 SCRIPTS := $(shell find app server -type f -name '*.js')
 IMAGES := app/images/*
 
-GLOBAL_DEPS = mocha \
-			  nodemon \
-			  bunyan \
-			  pm2 \
-			  postcss-cli \
-			  autoprefixer
+# Helpers
+MOCHA = ./node_modules/.bin/mocha
+NODEMON = ./node_modules/.bin/nodemon
+PM2 = ./node_modules/.bin/pm2
 
 INPUT_DIR = app
 OUTPUT_DIR = build
@@ -79,10 +77,10 @@ IMG_DEST_DIR = $(OUTPUT_DIR)/images
 FONT_DEST_DIR = $(OUTPUT_DIR)/fonts
 
 # Production
-prod: clean copy js_min css
+prod: node_modules clean copy js_min css
 
 # Development
-dev: clean copy js css
+dev: node_modules clean copy js css
 
 # Keeping the source maps
 js:
@@ -95,7 +93,6 @@ js_min:
 
 css:
 	@$(SASS) $(SASS_FLAGS) $(SASS_MAIN)
-	@postcss --use autoprefixer $(CSS_DEST_DIR)/main.css -o $(CSS_DEST_DIR)/main.css
 
 watchify:
 	@$(WATCHER) $(BROWSERIFY_FLAGS) --debug $(BROWSWER_MAIN)
@@ -114,21 +111,16 @@ e2e:
 	@$(PROTRACTOR) ./test/protractor.conf.js
 
 test-server-apis:
-	@mocha -w test/server/apis/*.js -R min --timeout 5000
+	@$(MOCHA) -w test/server/apis/*.js -R min --timeout 5000
 
 test-server-utils:
-	@mocha -w test/server/utils/*.js -R min --timeout 5000
+	@$(MOCHA) -w test/server/utils/*.js -R min --timeout 5000
 
 server:
-	@nodemon -q server/app.js
+	@$(NODEMON) -q server/app.js
 
 install:
 	@time npm i
-
-clean-install: purge install
-
-global:
-	@npm i -g $(GLOBAL_DEPS)
 
 copy:
 	@mkdir -p $(OUTPUT_DIR)/{js,css,fonts,images}
